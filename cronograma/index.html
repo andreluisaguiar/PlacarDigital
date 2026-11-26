@@ -170,9 +170,9 @@ const FASES = [
     { nome: "Acompanhamento do cronograma e controle de qualidade", prev: ["2026-09-09", "2026-11-10"], real: ["2026-09-09", "2026-11-13"] },
   ]},
   { fase: "Encerramento", itens: [
-    { nome: "Redação do relatório final", prev: ["2026-11-11", "2026-11-20"],
-      obs: "Começou no prazo, em paralelo com a validação; os resultados da placa entraram até 13/11." },
-    { tipo: "marco", nome: "Relatório final entregue", prev: "2026-11-20" },
+    { nome: "Redação do relatório final", prev: ["2026-11-11", "2026-11-20"], pendente: true,
+      obs: "Começou no prazo, em paralelo com a validação; a entrega, prevista para 20/11, está atrasada e ainda não aconteceu." },
+    { tipo: "marco", nome: "Relatório final entregue", prev: "2026-11-20", pendente: true },
     { nome: "Elaboração e aprovação do TEP", prev: ["2026-11-21", "2026-11-24"], pendente: true,
       obs: "TEP elaborado no prazo; a aprovação está atrasada e ainda não saiu." },
     { tipo: "marco", nome: "TEP aprovado", prev: "2026-11-24", pendente: true },
@@ -374,9 +374,8 @@ function summary() {
   if (causa) {
     document.getElementById("noteText").innerHTML =
       `A entrega dos componentes estava prevista para <b>${fmt(causa.p1)}</b> e só aconteceu em <b>${fmt(causa.r1)}</b> (+${causa.desvio} dias). ` +
-      `As atividades que dependiam das peças foram reprogramadas em sequência. O relatório final começou no prazo, em paralelo, e a folga até ${fmt(D("2026-11-20"))} absorveu o atraso: ` +
-      `o relatório final foi entregue no prazo.` +
-      (ROWS.some((r) => r.pendente) ? ` Já a <b>aprovação do TEP</b>, prevista para 24/11, está atrasada e ainda não saiu.` : ``);
+      `As atividades que dependiam das peças foram reprogramadas em sequência e a validação terminou em 13/11.` +
+      (ROWS.some((r) => r.pendente) ? ` No encerramento, a <b>entrega do relatório final</b> (prevista para 20/11) e a <b>aprovação do TEP</b> (prevista para 24/11) estão atrasadas e ainda não aconteceram.` : ``);
     document.getElementById("noteList").innerHTML = afet.map((r) =>
       `<li>${r.nome}: ${r.kind === "marco" ? fmt(r.p) + " → " + fmt(r.r) : fmt(r.p0) + "–" + fmt(r.p1) + " → " + fmt(r.r0) + "–" + fmt(r.r1)} <span class="dev">+${r.desvio} d</span></li>`).join("");
   } else {

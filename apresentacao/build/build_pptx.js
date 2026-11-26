@@ -173,7 +173,7 @@ function eq(slide, lines, x, y, w, h, fs = 16) {
   const cw = 266, gap = 24, y0 = 250, ch = 220;
   const cards = [
     { big: "95", unit: "", lab: "% do prazo", sub: "100 de 105 dias decorridos" },
-    { big: "15", unit: "/17", lab: "atividades", sub: "TEP com aprovação atrasada e apresentação" },
+    { big: "14", unit: "/17", lab: "atividades", sub: "Relatório e TEP atrasados" },
     { big: "8", unit: "/8", lab: "testes ok", sub: "T1–T7 na simulação e T8 na placa" },
   ];
   cards.forEach((c, i) => {
@@ -190,9 +190,9 @@ function eq(slide, lines, x, y, w, h, fs = 16) {
   T(s, "123,00", x + 24, y0 + 44, cw - 48, 60, { fontFace: MONO, fontSize: 38, bold: true });
   T(s, "em materiais", x + 24, y0 + 112, cw - 48, 26, { fontFace: MONO, fontSize: 15, color: C.led });
   T(s, "R$ 30,75 por integrante", x + 24, y0 + 146, cw - 48, 50, { fontSize: 14, color: C.mint });
-  T(s, [{ text: "Fase atual: ", options: { color: C.mint } }, { text: "Encerramento", options: { color: C.ink, bold: true } }, { text: ". Relatório entregue; aprovação do TEP atrasada (prevista 24/11); apresentação até 01/12.", options: { color: C.mint } }], 64, 620, 1150, 30, { fontSize: 16 });
+  T(s, [{ text: "Fase atual: ", options: { color: C.mint } }, { text: "Encerramento", options: { color: C.ink, bold: true } }, { text: ". Relatório e aprovação do TEP atrasados; apresentação até 01/12.", options: { color: C.mint } }], 64, 620, 1150, 30, { fontSize: 16 });
   num(s, 2);
-  s.addNotes("Resumo do status: 100 dos 105 dias decorridos (95%), 15 de 17 atividades concluídas, os 8 casos de teste aprovados e custo total de R$ 123,00. O relatório final foi entregue; o TEP foi elaborado, mas a aprovação, prevista para 24/11, está atrasada e ainda não saiu.");
+  s.addNotes("Resumo do status: 100 dos 105 dias decorridos (95%), 14 de 17 atividades concluídas, os 8 casos de teste aprovados e custo total de R$ 123,00. O relatório final, previsto para 20/11, ainda não foi entregue, e a aprovação do TEP, prevista para 24/11, também está atrasada.");
 }
 
 // 03 O QUE É
@@ -420,8 +420,8 @@ function slide6Panel(s) {
 // 13 GANTT
 {
   const s = pres.addSlide({ masterName: "CLARO" });
-  kicker(s, "Cronograma · Gantt · 15 de 17 atividades concluídas", true);
-  title(s, "Atraso de 4 dias, absorvido antes do fim", true);
+  kicker(s, "Cronograma · Gantt · 14 de 17 atividades concluídas", true);
+  title(s, "Peças com +4 dias; relatório e TEP atrasados", true);
   card(s, 64, 180, 1020, 1020 * 1428 / 2800, true);
   s.addImage({ path: IMG("gantt.png"), x: P(64), y: P(180), w: P(1020), h: P(1020 * 1428 / 2800), altText: "Gráfico de Gantt previsto e realizado de 19/08 a 01/12/2026, com marcos, atraso de 4 dias na entrega dos componentes e linha de hoje em 26/11" });
   const LX = 1100;
@@ -437,7 +437,7 @@ function slide6Panel(s) {
   T(s, [{ text: "+4 d", options: { fontSize: 16, bold: true, color: C.pled, breakLine: true } }, { text: "na entrega das peças", options: { fontSize: 9.5, color: C.pmuted } }], LX, 400, 160, 46, { fontFace: MONO });
   T(s, [{ text: "01/12", options: { fontSize: 16, bold: true, color: C.pcb, breakLine: true } }, { text: "fim mantido", options: { fontSize: 9.5, color: C.pmuted } }], LX, 462, 160, 46, { fontFace: MONO });
   num(s, 13, true);
-  s.addNotes("Gantt previsto × realizado, com marcos. A pedido do professor, todos os testes ficaram na fase Monitoramento e Testes. A entrega dos componentes atrasou 4 dias (prevista 03/11, chegou 07/11); a montagem física, o teste físico T8 e a validação final foram reprogramados, e a validação terminou em 13/11 em vez de 10/11. O relatório final começou no prazo, em paralelo, e a folga absorveu o atraso: o relatório foi entregue no prazo. Já a aprovação do TEP, prevista para 24/11, está atrasada (+2 dias até hoje, 26/11) e ainda não saiu. A apresentação está em andamento.");
+  s.addNotes("Gantt previsto × realizado, com marcos. A pedido do professor, todos os testes ficaram na fase Monitoramento e Testes. A entrega dos componentes atrasou 4 dias (prevista 03/11, chegou 07/11); a montagem física, o teste físico T8 e a validação final foram reprogramados, e a validação terminou em 13/11 em vez de 10/11. No encerramento, o relatório final começou no prazo, mas a entrega, prevista para 20/11, está atrasada (+6 dias até hoje, 26/11) e ainda não aconteceu. A aprovação do TEP, prevista para 24/11, também está atrasada (+2 dias). A apresentação está em andamento.");
 }
 
 // 14 PROBLEMAS
@@ -469,12 +469,12 @@ function slide6Panel(s) {
   const s = pres.addSlide({ masterName: "ESCURO" });
   traces(s, "b");
   kicker(s, "Próximos passos");
-  title(s, "Relatório entregue, TEP com aprovação atrasada");
+  title(s, "Relatório e TEP atrasados, apresentação em andamento");
   const y = 290;
   rect(s, 64, y, 1152, 3, C.trace);
   rect(s, 64, y, 1152 * 0.76, 3, C.led);
   const steps = [
-    ["✓ 20/11", C.copper, "Relatório final", "Resultados da placa e prestação de contas dos materiais", "done"],
+    ["ATRASADO · previsto 20/11", C.led, "Relatório final", "Resultados da placa e prestação de contas; entrega pendente", "late"],
     ["ATRASADO · previsto 24/11", C.led, "TEP", "Termo de Encerramento elaborado; aprovação ainda pendente", "late"],
     ["HOJE · 26/11 · até 01/12", C.led, "Apresentação", "O placar funcionando ao vivo na protoboard", "now"],
   ];
@@ -490,7 +490,7 @@ function slide6Panel(s) {
   T(s, "ANTES DA DEMO", 88, 614, 160, 18, { fontFace: MONO, fontSize: 10, bold: true, color: C.copper });
   T(s, "Ensaiar o roteiro · receber o MB102 (ou usar a fonte de bancada) · separar CIs reserva", 260, 610, 930, 26, { fontSize: 16 });
   num(s, 15);
-  s.addNotes("O relatório final foi entregue em 20/11. O TEP foi elaborado, mas a aprovação, prevista para 24/11, está atrasada e ainda não saiu. Falta a apresentação final, que vai até 01/12. Antes da demonstração: ensaiar o roteiro, receber o módulo de fonte MB102 (ou usar a fonte de bancada do laboratório) e separar componentes reserva.");
+  s.addNotes("O relatório final, previsto para 20/11, ainda não foi entregue. O TEP foi elaborado, mas a aprovação, prevista para 24/11, também está atrasada. Falta a apresentação final, que vai até 01/12. Antes da demonstração: ensaiar o roteiro, receber o módulo de fonte MB102 (ou usar a fonte de bancada do laboratório) e separar componentes reserva.");
 }
 
 // 16 ENCERRAMENTO

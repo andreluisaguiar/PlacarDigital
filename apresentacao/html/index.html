@@ -84,11 +84,11 @@ body.present .hint{display:none}
   <h2>A execução terminou: o placar funciona na simulação e na protoboard</h2>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:56px">
     <div class="card"><div class="seg-row" data-v="95" data-w="54"></div><div class="mono led" style="font-size:20px;margin-top:4px">% do prazo</div><p class="muted" style="margin-top:14px;font-size:17px">100 de 105 dias decorridos</p></div>
-    <div class="card"><div style="display:flex;align-items:flex-end;gap:8px"><span class="seg-row" data-v="15" data-w="54"></span><span class="mono muted" style="font-size:30px;padding-bottom:6px">/17</span></div><div class="mono led" style="font-size:20px;margin-top:4px">atividades</div><p class="muted" style="margin-top:14px;font-size:17px">TEP com aprovação atrasada e apresentação</p></div>
+    <div class="card"><div style="display:flex;align-items:flex-end;gap:8px"><span class="seg-row" data-v="14" data-w="54"></span><span class="mono muted" style="font-size:30px;padding-bottom:6px">/17</span></div><div class="mono led" style="font-size:20px;margin-top:4px">atividades</div><p class="muted" style="margin-top:14px;font-size:17px">Relatório e TEP atrasados</p></div>
     <div class="card"><div style="display:flex;align-items:flex-end;gap:8px"><span class="seg-row" data-v="8" data-w="54"></span><span class="mono muted" style="font-size:30px;padding-bottom:6px">/8</span></div><div class="mono led" style="font-size:20px;margin-top:4px">testes ok</div><p class="muted" style="margin-top:14px;font-size:17px">T1–T7 na simulação e T8 na placa</p></div>
     <div class="card"><div class="mono cu" style="font-size:20px">R$</div><div class="mono" style="font-size:52px;font-weight:700;line-height:1.05;color:var(--ink)">123,00</div><div class="mono led" style="font-size:20px;margin-top:4px">em materiais</div><p class="muted" style="margin-top:14px;font-size:17px">R$ 30,75 por integrante</p></div>
   </div>
-  <p style="position:absolute;left:64px;bottom:60px;font-size:20px" class="muted">Fase atual: <span style="color:var(--ink)">Encerramento</span>. Relatório entregue; aprovação do TEP atrasada (prevista 24/11); apresentação até 01/12.</p>
+  <p style="position:absolute;left:64px;bottom:60px;font-size:20px" class="muted">Fase atual: <span style="color:var(--ink)">Encerramento</span>. Relatório e aprovação do TEP atrasados; apresentação até 01/12.</p>
 </div></section>
 
 <!-- 03 O QUE É -->
@@ -259,8 +259,8 @@ body.present .hint{display:none}
 
 <!-- 13 GANTT -->
 <section class="frame"><div class="slide light" data-n="13">
-  <div class="kicker">Cronograma · Gantt · 15 de 17 atividades concluídas</div>
-  <h2>Atraso de 4 dias, absorvido antes do fim</h2>
+  <div class="kicker">Cronograma · Gantt · 14 de 17 atividades concluídas</div>
+  <h2>Peças com +4 dias; relatório e TEP atrasados</h2>
   <img src="../assets/img/gantt.png" alt="Gráfico de Gantt previsto e realizado de 19/08 a 01/12/2026, com marcos, atraso de 4 dias na entrega dos componentes e linha de hoje em 26/11" style="position:absolute;left:64px;top:180px;width:1020px;border-radius:8px;box-shadow:0 2px 10px rgba(12,33,27,.08)">
   <div style="position:absolute;left:1108px;top:200px;display:flex;flex-direction:column;gap:14px;font-size:14px;color:var(--pmuted)">
     <span><i style="display:inline-block;width:20px;height:11px;border-radius:2px;background:#13875A;vertical-align:-1px;margin-right:8px"></i>Concluída</span>
@@ -292,19 +292,15 @@ body.present .hint{display:none}
 <section class="frame"><div class="slide" data-n="15">
   <svg class="traces" data-traces="b"></svg>
   <div class="kicker">Próximos passos</div>
-  <h2>Relatório entregue, TEP com aprovação atrasada</h2>
+  <h2>Relatório e TEP atrasados, apresentação em andamento</h2>
   <div style="position:relative;margin-top:70px;height:240px">
     <div style="position:absolute;left:0;right:0;top:28px;height:3px;background:var(--trace)"></div>
     <div style="position:absolute;left:0;width:76%;top:28px;height:3px;background:var(--led)"></div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;position:relative">
-      <div><i style="display:block;width:22px;height:22px;border-radius:50%;background:var(--copper);margin-top:19px"></i><div class="mono cu" style="font-size:15px;margin-top:22px">✓ 20/11</div><div style="font-size:26px;font-weight:700;margin-top:6px">Relatório final</div><p class="muted" style="font-size:18px;margin-top:6px">Resultados da placa e prestação de contas dos materiais</p></div>
+      <div><i style="display:block;width:22px;height:22px;border-radius:50%;background:transparent;box-shadow:inset 0 0 0 3px var(--led);margin-top:19px"></i><div class="mono led" style="font-size:15px;margin-top:22px">ATRASADO · previsto 20/11</div><div style="font-size:26px;font-weight:700;margin-top:6px">Relatório final</div><p class="muted" style="font-size:18px;margin-top:6px">Resultados da placa e prestação de contas; entrega pendente</p></div>
       <div><i style="display:block;width:22px;height:22px;border-radius:50%;background:transparent;box-shadow:inset 0 0 0 3px var(--led);margin-top:19px"></i><div class="mono led" style="font-size:15px;margin-top:22px">ATRASADO · previsto 24/11</div><div style="font-size:26px;font-weight:700;margin-top:6px">TEP</div><p class="muted" style="font-size:18px;margin-top:6px">Termo de Encerramento elaborado; aprovação ainda pendente</p></div>
       <div><i style="display:block;width:22px;height:22px;border-radius:50%;background:var(--led);margin-top:19px;box-shadow:0 0 0 6px rgba(255,65,54,.2)"></i><div class="mono led" style="font-size:15px;margin-top:22px">HOJE · 26/11 · até 01/12</div><div style="font-size:26px;font-weight:700;margin-top:6px">Apresentação</div><p class="muted" style="font-size:18px;margin-top:6px">O placar funcionando ao vivo na protoboard</p></div>
     </div>
-  </div>
-  <div class="card" style="position:absolute;left:64px;right:64px;bottom:52px;display:flex;gap:28px;align-items:center;padding:18px 24px">
-    <span class="mono cu" style="font-size:13px;white-space:nowrap">ANTES DA DEMO</span>
-    <p style="font-size:18px">Ensaiar o roteiro · receber o MB102 (ou usar a fonte de bancada) · separar CIs reserva</p>
   </div>
   <div class="num" data-num="15"></div>
 </div></section>
