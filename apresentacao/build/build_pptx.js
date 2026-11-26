@@ -337,9 +337,9 @@ function slide6Panel(s) {
   kicker(s, "Simulação · Esquemático e analisador lógico");
   title(s, "No analisador, a contagem passa de 9 para 0 sem mostrar o 10");
   rect(s, 64, 196, 560, 560 * 927 / 1770, C.white);
-  s.addImage({ path: IMG("esquematico.png"), x: P(64), y: P(196), w: P(560), h: P(560 * 927 / 1770), altText: "Esquemático do módulo de um jogador no padrão Multisim" });
+  s.addImage({ path: IMG("esquematico_novo.png"), x: P(64), y: P(196), w: P(560), h: P(560 * 927 / 1770), altText: "Esquemático da nova simulação no Tinkercad, folha 1 de 2: módulo de um jogador com 74HC93, 74HC32, CD4511 e display" });
   s.addImage({ path: IMG("analisador.png"), x: P(656), y: P(196), w: P(560), h: P(560 * 706 / 1495), altText: "Analisador lógico: contagem de 0 a 9, reinício e reset" });
-  T(s, "Esquemático do módulo de um jogador, no padrão Multisim.", 64, 500, 560, 22, { fontSize: 13, color: C.mint });
+  T(s, "Nova simulação no Tinkercad: folha de um jogador (1 de 2).", 64, 500, 560, 22, { fontSize: 13, color: C.mint });
   T(s, "Analisador lógico (XLA1): 12 toques em S1, depois 1 toque em S2.", 656, 474, 560, 22, { fontSize: 13, color: C.mint });
   const cs = [
     ["TOQUES 1 A 9", [{ text: "Q0–Q3 sobem em binário e o display mostra 0 → 9." }]],
@@ -354,7 +354,7 @@ function slide6Panel(s) {
     T(s, t, x + 22, 590, cw - 44, 56, { fontSize: 15 });
   });
   num(s, 9);
-  s.addNotes("À esquerda, o esquemático no padrão Multisim. À direita, o analisador lógico com 12 toques em S1 e um em S2: a contagem vai de 0 a 9, no décimo toque aparece o 1010 por um instante e R0 zera tudo; depois o reset manual zera a partir do 2.");
+  s.addNotes("À esquerda, o esquemático gerado pelo Tinkercad a partir da nova simulação; esta é a folha de um jogador, a outra folha repete o módulo para o segundo jogador. À direita, o analisador lógico com 12 toques em S1 e um em S2: a contagem vai de 0 a 9, no décimo toque aparece o 1010 por um instante e R0 zera tudo; depois o reset manual zera a partir do 2.");
 }
 
 // 10 TESTES
