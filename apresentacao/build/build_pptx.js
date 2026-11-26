@@ -169,7 +169,7 @@ function eq(slide, lines, x, y, w, h, fs = 16) {
 {
   const s = pres.addSlide({ masterName: "ESCURO" });
   kicker(s, "Onde estamos");
-  title(s, "A execução terminou: o placar funciona na simulação e na protoboard");
+  title(s, "O placar funciona na simulação; a montagem na protoboard é o próximo passo");
   const cw = 266, gap = 24, y0 = 250, ch = 220;
   const cards = [
     { big: "95", unit: "", lab: "% do prazo", sub: "100 de 105 dias decorridos" },
