@@ -85,7 +85,7 @@ body.present .hint{display:none}
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:56px">
     <div class="card"><div class="seg-row" data-v="95" data-w="54"></div><div class="mono led" style="font-size:20px;margin-top:4px">% do prazo</div><p class="muted" style="margin-top:14px;font-size:17px">100 de 105 dias decorridos</p></div>
     <div class="card"><div style="display:flex;align-items:flex-end;gap:8px"><span class="seg-row" data-v="14" data-w="54"></span><span class="mono muted" style="font-size:30px;padding-bottom:6px">/17</span></div><div class="mono led" style="font-size:20px;margin-top:4px">atividades</div><p class="muted" style="margin-top:14px;font-size:17px">Relatório e TEP atrasados</p></div>
-    <div class="card"><div style="display:flex;align-items:flex-end;gap:8px"><span class="seg-row" data-v="8" data-w="54"></span><span class="mono muted" style="font-size:30px;padding-bottom:6px">/8</span></div><div class="mono led" style="font-size:20px;margin-top:4px">testes ok</div><p class="muted" style="margin-top:14px;font-size:17px">T1–T7 na simulação e T8 na placa</p></div>
+    <div class="card"><div style="display:flex;align-items:flex-end;gap:8px"><span class="seg-row" data-v="7" data-w="54"></span><span class="mono muted" style="font-size:30px;padding-bottom:6px">/8</span></div><div class="mono led" style="font-size:20px;margin-top:4px">testes ok</div><p class="muted" style="margin-top:14px;font-size:17px">T1–T7 na simulação; T8 na placa pendente</p></div>
     <div class="card"><div class="mono cu" style="font-size:20px">R$</div><div class="mono" style="font-size:52px;font-weight:700;line-height:1.05;color:var(--ink)">123,00</div><div class="mono led" style="font-size:20px;margin-top:4px">em materiais</div><p class="muted" style="margin-top:14px;font-size:17px">R$ 30,75 por integrante</p></div>
   </div>
   <p style="position:absolute;left:64px;bottom:60px;font-size:20px" class="muted">Fase atual: <span style="color:var(--ink)">Encerramento</span>. Relatório e aprovação do TEP atrasados; apresentação até 01/12.</p>
@@ -220,9 +220,9 @@ body.present .hint{display:none}
 <!-- 10 TESTES -->
 <section class="frame"><div class="slide light" data-n="10">
   <div class="kicker">Testes</div>
-  <h2>8 de 8 casos aprovados, da simulação à placa</h2>
+  <h2>7 de 8 casos aprovados na simulação; falta o teste na placa</h2>
   <div id="tests" style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px"></div>
-  <p class="muted" style="position:absolute;left:64px;bottom:40px;font-size:17px">T1–T7 executados em simulação (21/10–03/11). T8 repetiu todos na montagem física (11–12/11).</p>
+  <p class="muted" style="position:absolute;left:64px;bottom:40px;font-size:17px">T1–T7 executados em simulação (21/10–03/11). T8 repete todos na montagem física e ainda não foi executado.</p>
   <div class="num" data-num="10"></div>
 </div></section>
 
@@ -372,10 +372,10 @@ document.querySelectorAll("svg.traces").forEach(s=>traces(s,s.dataset.traces));
 
 // ---------- testes ----------
 const T=[["T1","Um toque a partir de 0","Display vai para 1","sim"],["T2","Nove toques seguidos","0 → 9 sem saltos","sim"],["T3","Toque com display em 9","Volta para 0","sim"],["T4","Reset em qualquer valor","Os dois displays vão a 0","sim"],
- ["T5","Reset pressionado + toque","Contagem presa em 0","sim"],["T6","Toques rápidos seguidos","Um ponto por toque","sim"],["T7","Ponto do jogador A","Placar B não muda","sim"],["T8","T1–T7 na montagem física","Igual à simulação","placa"]];
+ ["T5","Reset pressionado + toque","Contagem presa em 0","sim"],["T6","Toques rápidos seguidos","Um ponto por toque","sim"],["T7","Ponto do jogador A","Placar B não muda","sim"],["T8","T1–T7 na montagem física","Ainda não executado","placa"]];
 document.getElementById("tests").innerHTML=T.map(([id,e,r,w])=>`<div class="card" style="padding:22px 22px;min-height:178px;${w==="placa"?"background:#0C211B;color:#EDEFEA":""}">
   <div style="display:flex;justify-content:space-between;align-items:center"><span class="mono" style="font-size:30px;font-weight:700;color:${w==="placa"?"#FF4136":"#D62C1F"}">${id}</span>
-  <span class="mono" style="font-size:12px;color:${w==="placa"?"#E0A458":"#4B6A5E"}">✓ ${w==="placa"?"PLACA":"SIMULAÇÃO"}</span></div>
+  <span class="mono" style="font-size:12px;color:${w==="placa"?"#E0A458":"#4B6A5E"}">${w==="placa"?"○ PLACA · PENDENTE":"✓ SIMULAÇÃO"}</span></div>
   <div style="font-size:20px;font-weight:600;margin-top:16px">${e}</div><div style="font-size:17px;margin-top:8px;color:${w==="placa"?"#9DB5AA":"#4B6A5E"}">→ ${r}</div></div>`).join("");
 
 // ---------- custos ----------

@@ -174,7 +174,7 @@ function eq(slide, lines, x, y, w, h, fs = 16) {
   const cards = [
     { big: "95", unit: "", lab: "% do prazo", sub: "100 de 105 dias decorridos" },
     { big: "14", unit: "/17", lab: "atividades", sub: "Relatório e TEP atrasados" },
-    { big: "8", unit: "/8", lab: "testes ok", sub: "T1–T7 na simulação e T8 na placa" },
+    { big: "7", unit: "/8", lab: "testes ok", sub: "T1–T7 na simulação; T8 na placa pendente" },
   ];
   cards.forEach((c, i) => {
     const x = 64 + i * (cw + gap);
@@ -192,7 +192,7 @@ function eq(slide, lines, x, y, w, h, fs = 16) {
   T(s, "R$ 30,75 por integrante", x + 24, y0 + 146, cw - 48, 50, { fontSize: 14, color: C.mint });
   T(s, [{ text: "Fase atual: ", options: { color: C.mint } }, { text: "Encerramento", options: { color: C.ink, bold: true } }, { text: ". Relatório e aprovação do TEP atrasados; apresentação até 01/12.", options: { color: C.mint } }], 64, 620, 1150, 30, { fontSize: 16 });
   num(s, 2);
-  s.addNotes("Resumo do status: 100 dos 105 dias decorridos (95%), 14 de 17 atividades concluídas, os 8 casos de teste aprovados e custo total de R$ 123,00. O relatório final, previsto para 20/11, ainda não foi entregue, e a aprovação do TEP, prevista para 24/11, também está atrasada.");
+  s.addNotes("Resumo do status: 100 dos 105 dias decorridos (95%), 14 de 17 atividades concluídas, 7 dos 8 casos de teste aprovados (T1–T7, na simulação; o T8, na placa, ainda não foi feito) e custo total de R$ 123,00. O relatório final, previsto para 20/11, ainda não foi entregue, e a aprovação do TEP, prevista para 24/11, também está atrasada.");
 }
 
 // 03 O QUE É
@@ -361,22 +361,22 @@ function slide6Panel(s) {
 {
   const s = pres.addSlide({ masterName: "CLARO" });
   kicker(s, "Testes", true);
-  title(s, "8 de 8 casos aprovados, da simulação à placa", true);
+  title(s, "7 de 8 casos aprovados na simulação; falta o teste na placa", true);
   const TT = [["T1", "Um toque a partir de 0", "Display vai para 1"], ["T2", "Nove toques seguidos", "0 → 9 sem saltos"], ["T3", "Toque com display em 9", "Volta para 0"], ["T4", "Reset em qualquer valor", "Os dois displays vão a 0"],
-    ["T5", "Reset pressionado + toque", "Contagem presa em 0"], ["T6", "Toques rápidos seguidos", "Um ponto por toque"], ["T7", "Ponto do jogador A", "Placar B não muda"], ["T8", "T1–T7 na montagem física", "Igual à simulação"]];
+    ["T5", "Reset pressionado + toque", "Contagem presa em 0"], ["T6", "Toques rápidos seguidos", "Um ponto por toque"], ["T7", "Ponto do jogador A", "Placar B não muda"], ["T8", "T1–T7 na montagem física", "Ainda não executado"]];
   const cw = (1152 - 3 * 18) / 4, ch = 178;
   TT.forEach(([id, e, r], i) => {
     const x = 64 + (i % 4) * (cw + 18), y = 196 + Math.floor(i / 4) * (ch + 18);
     const dark = id === "T8";
     card(s, x, y, cw, ch, !dark, dark ? { fill: C.pcb } : {});
     T(s, id, x + 22, y + 20, 80, 34, { fontFace: MONO, fontSize: 22, bold: true, color: dark ? C.led : C.pled });
-    T(s, dark ? "✓ PLACA" : "✓ SIMULAÇÃO", x + cw - 142, y + 28, 120, 16, { fontFace: MONO, fontSize: 9, color: dark ? C.copper : C.pmuted, align: "right" });
+    T(s, dark ? "○ PLACA · PENDENTE" : "✓ SIMULAÇÃO", x + cw - 182, y + 28, 160, 16, { fontFace: MONO, fontSize: 9, color: dark ? C.copper : C.pmuted, align: "right" });
     T(s, e, x + 22, y + 66, cw - 44, 50, { fontSize: 15, bold: true, color: dark ? C.ink : C.pcb });
     T(s, "→ " + r, x + 22, y + 122, cw - 44, 44, { fontSize: 14, color: dark ? C.mint : C.pmuted });
   });
-  T(s, "T1–T7 executados em simulação (21/10–03/11). T8 repetiu todos na montagem física (11–12/11).", 64, 630, 1150, 24, { fontSize: 14, color: C.pmuted });
+  T(s, "T1–T7 executados em simulação (21/10–03/11). T8 repete todos na montagem física e ainda não foi executado.", 64, 630, 1150, 24, { fontSize: 14, color: C.pmuted });
   num(s, 10, true);
-  s.addNotes("Bateria de testes: entradas normais (T1, T2), limite 9 → 0 (T3), reset (T4), casos extremos (T5, T6) e independência entre jogadores (T7), todos aprovados em simulação. No T8 repetimos tudo na montagem física com o mesmo resultado.");
+  s.addNotes("Bateria de testes: entradas normais (T1, T2), limite 9 → 0 (T3), reset (T4), casos extremos (T5, T6) e independência entre jogadores (T7), todos aprovados em simulação. O T8, que repete tudo na montagem física, ainda não foi executado: é o próximo passo depois da montagem na protoboard.");
 }
 
 // 11 MONTAGEM
