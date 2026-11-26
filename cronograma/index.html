@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cronograma do Placar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F6F4; --surface:#FFFFFF; --ink:#0C211B; --ink2:#4B6A5E; --line:#E3EAE6; --line2:#CFDAD4;
+  --done:#13875A; --now:#2F6FD0; --late:#D62C1F; --todo:#8AA39A; --base:#C9D5CF; --today:#D62C1F; --phase:#EEF3F0;
+  --accent:#9A5B12;
+  --head:"Space Grotesk", Arial, sans-serif; --mono:"JetBrains Mono","Courier New",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#08140F; --surface:#0F1F1A; --ink:#EDEFEA; --ink2:#9DB5AA; --line:#1E3A30; --line2:#2A4A3E;
+    --done:#2FA77A; --now:#5B93F0; --late:#F0554A; --todo:#6E8F82; --base:#2C4A3F; --today:#F0554A; --phase:#132A22;
+    --accent:#E0A458;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#08140F; --surface:#0F1F1A; --ink:#EDEFEA; --ink2:#9DB5AA; --line:#1E3A30; --line2:#2A4A3E;
+  --done:#2FA77A; --now:#5B93F0; --late:#F0554A; --todo:#6E8F82; --base:#2C4A3F; --today:#F0554A; --phase:#132A22;
+  --accent:#E0A458;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--head);line-height:1.45}
+.wrap{max-width:1360px;margin:0 auto;padding:32px 24px 64px}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-size:34px;line-height:1.1;margin-top:8px;letter-spacing:-.01em}
+.sub{color:var(--ink2);margin-top:8px;max-width:820px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:28px}
+.stat{background:var(--surface);border-radius:10px;padding:16px 18px;border:1px solid var(--line)}
+.stat .v{font-family:var(--mono);font-size:28px;font-weight:700;line-height:1.1}
+.stat .l{color:var(--ink2);font-size:14px;margin-top:4px}
+.stat .v.late{color:var(--late)}
+.bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:28px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:14px;color:var(--ink2);align-items:center}
+.legend i{display:inline-block;vertical-align:-2px;margin-right:6px}
+.sw{width:22px;height:12px;border-radius:3px}
+.dia{width:12px;height:12px;transform:rotate(45deg);border-radius:2px}
+.spacer{flex:1}
+button,label.tg{font-family:var(--mono);font-size:12px;background:var(--surface);color:var(--ink);border:1px solid var(--line2);border-radius:6px;padding:7px 12px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+button:hover,label.tg:hover{border-color:var(--ink2)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:14px}
+.chart{overflow-x:auto;padding:8px 0 4px}
+svg text{font-family:"Space Grotesk","DejaVu Sans",Arial,sans-serif}
+.note{display:grid;grid-template-columns:auto 1fr;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-top:20px}
+.note .ic{width:34px;height:34px;border-radius:50%;background:color-mix(in srgb,var(--late) 14%,transparent);color:var(--late);display:grid;place-items:center;font-weight:700;font-family:var(--mono)}
+.note h3{font-size:17px}
+.note p{color:var(--ink2);margin-top:4px;font-size:15px}
+.note ol{color:var(--ink2);margin:8px 0 0 18px;font-size:15px}
+h2{font-size:22px;margin-top:40px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink2);font-weight:600;position:sticky;top:0;background:var(--surface)}
+td.mono{font-family:var(--mono);font-size:13px;white-space:nowrap}
+tr.ph td{background:var(--phase);font-weight:700;font-size:13px;letter-spacing:.02em}
+.tbl{overflow-x:auto}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;white-space:nowrap}
+.pill i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.dev{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--late)}
+.tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font-size:13px;padding:9px 11px;border-radius:8px;max-width:300px;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;transition:opacity .08s;z-index:10}
+.tip b{display:block;margin-bottom:3px}
+.tip .m{font-family:var(--mono);font-size:12px;opacity:.85}
+.foot{color:var(--ink2);font-size:13px;margin-top:28px}
+.hit{cursor:default}
+body.export{background:var(--surface)}
+body.export .wrap{max-width:none;padding:0}
+body.export .wrap > :not(#chartCard){display:none}
+body.export .card{border:0;border-radius:0;margin:0}
+body.export .chart{padding:0;overflow:visible}
+@media (max-width:760px){
+  .wrap{padding:20px 16px 48px}
+  h1{font-size:26px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media print{
+  @page{size:A4 landscape;margin:10mm}
+  body{background:#fff}
+  .bar button,.bar label.tg,.noprint{display:none}
+  .wrap{max-width:none;padding:0}
+  .card,.stat,.note{border-color:#ddd}
+  .chart{overflow:visible}
+  h2{break-before:page}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">Circuitos Digitais · UFMA · Placar Eletrônico Digital</div>
+  <h1>Cronograma do projeto: previsto × realizado</h1>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="bar">
+    <div class="legend" id="legend"></div>
+    <div class="spacer"></div>
+    <label class="tg noprint"><input type="checkbox" id="optBase" checked> Linha de base</label>
+    <button class="noprint" id="btnTheme" type="button">Tema</button>
+    <button class="noprint" id="btnPng" type="button">Baixar PNG</button>
+    <button class="noprint" id="btnPrint" type="button">Imprimir / PDF</button>
+  </div>
+
+  <div class="card" id="chartCard"><div class="chart" id="chart"></div></div>
+
+  <div class="note">
+    <div class="ic">!</div>
+    <div>
+      <h3 id="noteTitle">Atraso na entrega dos componentes</h3>
+      <p id="noteText"></p>
+      <ol id="noteList"></ol>
+    </div>
+  </div>
+
+  <h2>Tabela do cronograma</h2>
+  <div class="card tbl"><table id="tbl"></table></div>
+
+  <p class="foot" id="foot"></p>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+/* =====================================================================
+   DADOS DO CRONOGRAMA: edite aqui.
+   Datas no formato "AAAA-MM-DD".
+   prev = previsto (linha de base do TAP) · real = realizado / reprogramado
+   Se "real" for omitido, vale o previsto.
+   Marcos: tipo "marco" com uma data só.
+   ===================================================================== */
+const PROJETO = {
+  inicio: "2026-08-19",
+  fim: "2026-12-01",
+  // Data usada para "hoje". null = data atual do computador. Pode forçar com ?hoje=2026-11-20 na URL.
+  hoje: null,
+};
+
+const FASES = [
+  { fase: "Início", itens: [
+    { nome: "Elaboração e aprovação do TAP", prev: ["2026-08-19", "2026-08-25"] },
+    { tipo: "marco", nome: "TAP aprovado", prev: "2026-08-25" },
+  ]},
+  { fase: "Planejamento", itens: [
+    { nome: "Levantamento bibliográfico", prev: ["2026-08-26", "2026-09-01"] },
+    { nome: "Definição de metodologia e arquitetura", prev: ["2026-09-02", "2026-09-08"] },
+    { tipo: "marco", nome: "Arquitetura definida", prev: "2026-09-08" },
+  ]},
+  { fase: "Execução", itens: [
+    { nome: "Implementação do contador digital (74HC93)", prev: ["2026-09-09", "2026-09-22"] },
+    { nome: "Decodificação BCD e displays de 7 segmentos", prev: ["2026-09-23", "2026-10-06"] },
+    { nome: "Projeto do circuito de debounce dos botões", prev: ["2026-10-07", "2026-10-13"] },
+    { nome: "Integração dos módulos (2 jogadores)", prev: ["2026-10-14", "2026-10-20"] },
+    { nome: "Aquisição dos materiais", prev: ["2026-10-21", "2026-11-03"], real: ["2026-10-21", "2026-11-07"],
+      causa: true, obs: "Atraso do fornecedor na entrega dos componentes." },
+    { tipo: "marco", nome: "Componentes entregues", prev: "2026-11-03", real: "2026-11-07" },
+    { nome: "Montagem física do placar", prev: ["2026-11-04", "2026-11-06"], real: ["2026-11-08", "2026-11-10"],
+      obs: "Começou só depois da entrega dos componentes." },
+  ]},
+  { fase: "Monitoramento e Testes", itens: [
+    { nome: "Verificação dos módulos individualmente", prev: ["2026-09-09", "2026-10-20"] },
+    { nome: "Testes em simulação: normais, limites e extremos (T1–T7)", prev: ["2026-10-21", "2026-11-03"] },
+    { tipo: "marco", nome: "Testes em simulação aprovados", prev: "2026-11-03" },
+    { nome: "Execução do teste físico na protoboard (T8)", prev: ["2026-11-07", "2026-11-08"], real: ["2026-11-11", "2026-11-12"] },
+    { nome: "Correção de erros e validação final", prev: ["2026-11-09", "2026-11-10"], real: ["2026-11-12", "2026-11-13"] },
+    { tipo: "marco", nome: "Placar validado na protoboard", prev: "2026-11-10", real: "2026-11-13" },
+    { nome: "Acompanhamento do cronograma e controle de qualidade", prev: ["2026-09-09", "2026-11-10"], real: ["2026-09-09", "2026-11-13"] },
+  ]},
+  { fase: "Encerramento", itens: [
+    { nome: "Redação do relatório final", prev: ["2026-11-11", "2026-11-20"],
+      obs: "Começou no prazo, em paralelo com a validação; os resultados da placa entraram até 13/11." },
+    { tipo: "marco", nome: "Relatório final entregue", prev: "2026-11-20" },
+    { nome: "Elaboração e aprovação do TEP", prev: ["2026-11-21", "2026-11-24"] },
+    { tipo: "marco", nome: "TEP aprovado", prev: "2026-11-24" },
+    { nome: "Apresentação final do projeto", prev: ["2026-11-25", "2026-12-01"] },
+    { tipo: "marco", nome: "Encerramento do projeto", prev: "2026-12-01" },
+  ]},
+];
+/* ===================================================================== */
+
+const DAY = 864e5;
+const D = (s) => { const [y, m, d] = s.split("-").map(Number); return Date.UTC(y, m - 1, d); };
+const fmt = (t) => { const d = new Date(t); return String(d.getUTCDate()).padStart(2, "0") + "/" + String(d.getUTCMonth() + 1).padStart(2, "0"); };
+const MES = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"];
+
+function hojeUTC() {
+  const q = new URLSearchParams(location.search).get("hoje");
+  if (q && /^\d{4}-\d{2}-\d{2}$/.test(q)) return D(q);
+  if (PROJETO.hoje) return D(PROJETO.hoje);
+  const n = new Date(); return Date.UTC(n.getFullYear(), n.getMonth(), n.getDate());
+}
+const HOJE = hojeUTC();
+// Modo exportação (para slides): ?export=1&w=1400&row=20 mostra só o gráfico, em tamanho fixo.
+const EXPORT = (() => {
+  const q = new URLSearchParams(location.search);
+  if (!q.get("export")) return null;
+  return { w: +q.get("w") || 1400, row: +q.get("row") || 22 };
+})();
+
+// ---------- normaliza ----------
+const ROWS = [];
+FASES.forEach((f) => {
+  ROWS.push({ kind: "fase", nome: f.fase });
+  f.itens.forEach((it) => {
+    if (it.tipo === "marco") {
+      const p = D(it.prev), r = D(it.real || it.prev);
+      ROWS.push({ kind: "marco", fase: f.fase, nome: it.nome, p, r, desvio: Math.round((r - p) / DAY), obs: it.obs });
+    } else {
+      const p0 = D(it.prev[0]), p1 = D(it.prev[1]);
+      const rr = it.real || it.prev, r0 = D(rr[0]), r1 = D(rr[1]);
+      ROWS.push({ kind: "tarefa", fase: f.fase, nome: it.nome, p0, p1, r0, r1, desvio: Math.round((r1 - p1) / DAY), causa: !!it.causa, obs: it.obs });
+    }
+  });
+});
+function status(r) {
+  if (r.kind === "marco") return r.r <= HOJE ? "done" : "todo";
+  if (r.r1 < HOJE) return "done";
+  if (r.r0 <= HOJE && HOJE <= r.r1) return "now";
+  return "todo";
+}
+const STATUS_TXT = { done: "Concluída", now: "Em andamento", todo: "Pendente" };
+
+// ---------- cores resolvidas (para o PNG também) ----------
+function cssv(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function palette() {
+  return { bg: cssv("--surface"), ink: cssv("--ink"), ink2: cssv("--ink2"), line: cssv("--line"), line2: cssv("--line2"),
+    done: cssv("--done"), now: cssv("--now"), late: cssv("--late"), todo: cssv("--todo"), base: cssv("--base"), today: cssv("--today"), phase: cssv("--phase") };
+}
+
+// ---------- gráfico ----------
+const tip = document.getElementById("tip");
+function draw() {
+  const C = palette();
+  const showBase = document.getElementById("optBase").checked;
+  const host = document.getElementById("chart");
+  const EX = EXPORT;
+  const W = EX ? EX.w : Math.max(1040, host.clientWidth);
+  const LABEL = 340, RIGHT = 70, TOP = 54, ROWH = EX ? EX.row : 30, PHH = EX ? EX.row : 30;
+  const t0 = D(PROJETO.inicio) - 3 * DAY, t1 = D(PROJETO.fim) + 6 * DAY;
+  const x = (t) => LABEL + ((t - t0) / (t1 - t0)) * (W - LABEL - RIGHT);
+  let y = TOP;
+  const pos = ROWS.map((r) => { const h = r.kind === "fase" ? PHH : ROWH; const o = { y, h }; y += h; return o; });
+  const H = y + 40;
+  const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  let s = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Gráfico de Gantt do projeto, previsto e realizado, com marcos">`;
+  s += `<style>text{font-family:"Space Grotesk",Arial,Helvetica,"DejaVu Sans",sans-serif}</style>`;
+  s += `<defs>
+    <pattern id="hLate" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="${C.late}" opacity=".25"/><line x1="0" y1="0" x2="0" y2="6" stroke="${C.late}" stroke-width="3"/></pattern>
+    <pattern id="hTodo" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="${C.todo}" stroke-width="2"/></pattern>
+  </defs>`;
+  s += `<rect width="${W}" height="${H}" fill="${C.bg}"/>`;
+  // faixas de fase
+  ROWS.forEach((r, i) => { if (r.kind === "fase") s += `<rect x="0" y="${pos[i].y}" width="${W}" height="${PHH}" fill="${C.phase}"/>`; });
+  // meses e semanas
+  const first = new Date(t0);
+  for (let m = new Date(Date.UTC(first.getUTCFullYear(), first.getUTCMonth(), 1)); m.getTime() <= t1; m = new Date(Date.UTC(m.getUTCFullYear(), m.getUTCMonth() + 1, 1))) {
+    const a = Math.max(m.getTime(), t0), nx = Date.UTC(m.getUTCFullYear(), m.getUTCMonth() + 1, 1), b = Math.min(nx, t1);
+    if (m.getTime() >= t0) s += `<line x1="${x(m.getTime())}" y1="18" x2="${x(m.getTime())}" y2="${H - 40}" stroke="${C.line2}" stroke-width="1"/>`;
+    if (x(b) - x(a) > 40) s += `<text x="${(x(a) + x(b)) / 2}" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="${C.ink2}" letter-spacing="1.5">${MES[m.getUTCMonth()]}</text>`;
+  }
+  for (let t = t0; t <= t1; t += DAY) {
+    if (new Date(t).getUTCDay() === 1) {
+      s += `<line x1="${x(t)}" y1="36" x2="${x(t)}" y2="${H - 40}" stroke="${C.line}" stroke-width="1"/>`;
+      s += `<text x="${x(t) + 3}" y="44" font-size="9.5" fill="${C.ink2}">${fmt(t).slice(0, 2)}</text>`;
+    }
+  }
+  s += `<line x1="0" y1="${TOP - 0.5}" x2="${W}" y2="${TOP - 0.5}" stroke="${C.line2}"/>`;
+  if (HOJE >= t0 && HOJE <= t1) { const xh0 = x(HOJE + DAY / 2); s += `<line x1="${xh0}" y1="${TOP - 4}" x2="${xh0}" y2="${H - 34}" stroke="${C.today}" stroke-width="2" stroke-dasharray="5 4"/>`; }
+  // linhas
+  ROWS.forEach((r, i) => {
+    const { y, h } = pos[i], cy = y + h / 2;
+    if (r.kind === "fase") {
+      s += `<text x="16" y="${cy + 4.5}" font-size="12.5" font-weight="700" fill="${C.ink}" letter-spacing=".5">${esc(r.nome.toUpperCase())}</text>`;
+      return;
+    }
+    const st = status(r);
+    const isM = r.kind === "marco";
+    s += `<text x="${isM ? 34 : 28}" y="${cy + 4.5}" font-size="13" ${isM ? 'font-style="italic"' : ""} fill="${isM ? C.ink2 : C.ink}">${esc(r.nome)}</text>`;
+    if (isM) {
+      const dm = (cx, fill, stroke, dash) => `<rect x="${cx - 6.5}" y="${cy - 6.5}" width="13" height="13" transform="rotate(45 ${cx} ${cy})" rx="1.5" fill="${fill}" stroke="${stroke}" stroke-width="2" ${dash ? 'stroke-dasharray="2 2"' : ""}/>`;
+      s += `<text x="18" y="${cy + 4.5}" font-size="11" fill="${C.ink2}">◆</text>`;
+      if (r.desvio && showBase) {
+        s += `<line x1="${x(r.p) + 6}" y1="${cy}" x2="${x(r.r) - 8}" y2="${cy}" stroke="${C.late}" stroke-width="1.5" stroke-dasharray="3 3"/>`;
+        s += dm(x(r.p), C.bg, C.ink2, true);
+      }
+      const fill = st === "done" ? (r.desvio > 0 ? C.late : C.done) : C.bg;
+      const stroke = st === "done" ? fill : C.todo;
+      s += dm(x(r.r), fill, stroke, false);
+      s += `<rect x="${x(r.r) + 10}" y="${cy - 8}" width="${(fmt(r.r) + (r.desvio > 0 ? " +" + r.desvio + " d" : "")).length * 6.4 + 6}" height="16" fill="${C.bg}"/>`;
+      s += `<text x="${x(r.r) + 12}" y="${cy + 4}" font-size="11" fill="${C.ink2}" stroke="${C.bg}" stroke-width="4" paint-order="stroke" stroke-linejoin="round">${fmt(r.r)}${r.desvio > 0 ? ` <tspan fill="${C.late}" font-weight="700">+${r.desvio} d</tspan>` : ""}</text>`;
+    } else {
+      const bh = 14, by = cy - bh / 2 + (showBase ? -2 : 0);
+      if (showBase) s += `<rect x="${x(r.p0)}" y="${cy + 6}" width="${x(r.p1 + DAY) - x(r.p0)}" height="4" rx="2" fill="${C.base}"/>`;
+      const xa = x(r.r0), xe = x(r.r1 + DAY);
+      const lateFrom = r.desvio > 0 ? Math.max(r.r0, r.p1 + DAY) : null;
+      const fill = st === "done" ? C.done : st === "now" ? C.now : "url(#hTodo)";
+      const stroke = st === "todo" ? C.todo : "none";
+      if (r.causa && lateFrom) {
+        s += `<rect x="${xa}" y="${by}" width="${x(lateFrom) - xa}" height="${bh}" rx="3" fill="${fill}" stroke="${stroke}"/>`;
+        s += `<rect x="${x(lateFrom)}" y="${by}" width="${xe - x(lateFrom)}" height="${bh}" rx="3" fill="url(#hLate)" stroke="${C.late}" stroke-width="1.5"/>`;
+      } else {
+        s += `<rect x="${xa}" y="${by}" width="${xe - xa}" height="${bh}" rx="3" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>`;
+        if (r.desvio > 0) s += `<rect x="${xa}" y="${by}" width="${xe - xa}" height="${bh}" rx="3" fill="none" stroke="${C.late}" stroke-width="2"/>`;
+      }
+      const lab = `${fmt(r.r0)}–${fmt(r.r1)}`;
+      s += `<rect x="${xe + 4}" y="${cy - 8}" width="${(lab + (r.desvio > 0 ? " +" + r.desvio + " d" : "")).length * 6.4 + 6}" height="16" fill="${C.bg}"/>`;
+      s += `<text x="${xe + 6}" y="${cy + 3}" font-size="11" fill="${C.ink2}" stroke="${C.bg}" stroke-width="4" paint-order="stroke" stroke-linejoin="round">${lab}${r.desvio > 0 ? ` <tspan fill="${C.late}" font-weight="700">+${r.desvio} d</tspan>` : ""}</text>`;
+    }
+    s += `<rect class="hit" data-i="${i}" x="0" y="${y}" width="${W}" height="${h}" fill="transparent"/>`;
+  });
+  // hoje
+  if (HOJE >= t0 && HOJE <= t1) {
+    const xh = x(HOJE + DAY / 2);
+    s += `<rect x="${xh - 44}" y="${H - 32}" width="88" height="20" rx="10" fill="${C.today}"/>`;
+    s += `<text x="${xh}" y="${H - 18}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">hoje · ${fmt(HOJE)}</text>`;
+  }
+  s += `</svg>`;
+  host.innerHTML = s;
+  host.querySelectorAll(".hit").forEach((el) => {
+    el.addEventListener("mousemove", (e) => showTip(e, ROWS[+el.dataset.i]));
+    el.addEventListener("mouseleave", () => (tip.style.opacity = 0));
+  });
+}
+function showTip(e, r) {
+  const st = STATUS_TXT[status(r)];
+  let h = `<b>${r.nome}</b>`;
+  if (r.kind === "marco") {
+    h += `<div class="m">Previsto ${fmt(r.p)} · Realizado ${fmt(r.r)}</div>`;
+  } else {
+    h += `<div class="m">Previsto ${fmt(r.p0)}–${fmt(r.p1)} (${Math.round((r.p1 - r.p0) / DAY) + 1} d)</div>`;
+    h += `<div class="m">Realizado ${fmt(r.r0)}–${fmt(r.r1)} (${Math.round((r.r1 - r.r0) / DAY) + 1} d)</div>`;
+  }
+  h += `<div class="m">${st}${r.desvio > 0 ? ` · atraso de ${r.desvio} d` : ""}</div>`;
+  if (r.obs) h += `<div style="margin-top:4px">${r.obs}</div>`;
+  tip.innerHTML = h; tip.style.opacity = 1;
+  const pad = 14, w = tip.offsetWidth, hh = tip.offsetHeight;
+  let lx = e.clientX + pad, ly = e.clientY + pad;
+  if (lx + w > innerWidth - 8) lx = e.clientX - w - pad;
+  if (ly + hh > innerHeight - 8) ly = e.clientY - hh - pad;
+  tip.style.left = lx + "px"; tip.style.top = ly + "px";
+}
+
+// ---------- resumo, legenda, nota, tabela ----------
+function summary() {
+  const tarefas = ROWS.filter((r) => r.kind === "tarefa"), marcos = ROWS.filter((r) => r.kind === "marco");
+  const feitas = tarefas.filter((r) => status(r) === "done").length;
+  const mFeitos = marcos.filter((r) => status(r) === "done").length;
+  const ini = D(PROJETO.inicio), fim = D(PROJETO.fim);
+  const total = Math.round((fim - ini) / DAY) + 1, dec = Math.min(total, Math.max(0, Math.round((HOJE - ini) / DAY) + 1));
+  const fimPrev = Math.max(...ROWS.filter((r) => r.kind === "tarefa").map((r) => r.p1));
+  const fimReal = Math.max(...ROWS.filter((r) => r.kind === "tarefa").map((r) => r.r1));
+  const atrasoFim = Math.round((fimReal - fimPrev) / DAY);
+  const maxAtraso = Math.max(0, ...ROWS.filter((r) => r.kind !== "fase").map((r) => r.desvio));
+  document.getElementById("stats").innerHTML = `
+    <div class="stat"><div class="v">${Math.round((dec / total) * 100)}%</div><div class="l">do prazo (${dec} de ${total} dias)</div></div>
+    <div class="stat"><div class="v">${feitas}/${tarefas.length}</div><div class="l">atividades concluídas</div></div>
+    <div class="stat"><div class="v">${mFeitos}/${marcos.length}</div><div class="l">marcos atingidos</div></div>
+    <div class="stat"><div class="v ${maxAtraso ? "late" : ""}">${maxAtraso ? "+" + maxAtraso + " d" : "0 d"}</div><div class="l">${atrasoFim > 0 ? "atraso no fim do projeto: +" + atrasoFim + " d" : "maior atraso pontual · fim mantido em " + fmt(fim)}</div></div>`;
+  document.getElementById("legend").innerHTML = `
+    <span><i class="sw" style="background:var(--done)"></i>Concluída</span>
+    <span><i class="sw" style="background:var(--now)"></i>Em andamento</span>
+    <span><i class="sw" style="border:1.5px solid var(--todo);background:repeating-linear-gradient(45deg,var(--todo) 0 2px,transparent 2px 5px)"></i>Pendente</span>
+    <span><i class="sw" style="border:1.5px solid var(--late);background:repeating-linear-gradient(45deg,var(--late) 0 3px,transparent 3px 6px)"></i>Atraso</span>
+    <span><i class="sw" style="height:4px;background:var(--base)"></i>Previsto</span>
+    <span><i class="dia" style="background:var(--done)"></i>Marco</span>`;
+
+  const causa = ROWS.find((r) => r.causa);
+  const afet = ROWS.filter((r) => r.kind !== "fase" && r.desvio > 0 && !r.causa);
+  if (causa) {
+    document.getElementById("noteText").innerHTML =
+      `A entrega dos componentes estava prevista para <b>${fmt(causa.p1)}</b> e só aconteceu em <b>${fmt(causa.r1)}</b> (+${causa.desvio} dias). ` +
+      `As atividades que dependiam das peças foram reprogramadas em sequência. O relatório final começou no prazo, em paralelo, e a folga até ${fmt(D("2026-11-20"))} absorveu o atraso: ` +
+      `<b>nenhum marco do encerramento mudou</b>.`;
+    document.getElementById("noteList").innerHTML = afet.map((r) =>
+      `<li>${r.nome}: ${r.kind === "marco" ? fmt(r.p) + " → " + fmt(r.r) : fmt(r.p0) + "–" + fmt(r.p1) + " → " + fmt(r.r0) + "–" + fmt(r.r1)} <span class="dev">+${r.desvio} d</span></li>`).join("");
+  } else {
+    document.querySelector(".note").style.display = "none";
+  }
+
+  let t = `<tr><th>Atividade</th><th>Previsto</th><th>Realizado</th><th>Dur.</th><th>Desvio</th><th>Situação</th></tr>`;
+  ROWS.forEach((r) => {
+    if (r.kind === "fase") { t += `<tr class="ph"><td colspan="6">${r.nome}</td></tr>`; return; }
+    const st = status(r), col = st === "done" ? "var(--done)" : st === "now" ? "var(--now)" : "var(--todo)";
+    const dev = r.desvio > 0 ? `<span class="dev">+${r.desvio} d</span>` : `<span style="color:var(--ink2)">—</span>`;
+    if (r.kind === "marco") {
+      t += `<tr><td><span style="color:var(--ink2)">◆</span> <i>${r.nome}</i></td><td class="mono">${fmt(r.p)}</td><td class="mono">${fmt(r.r)}</td><td class="mono">marco</td><td>${dev}</td><td><span class="pill"><i style="background:${col}"></i>${st === "done" ? "Atingido" : "Pendente"}</span></td></tr>`;
+    } else {
+      t += `<tr><td>${r.nome}${r.obs ? `<div style="color:var(--ink2);font-size:12.5px;margin-top:2px">${r.obs}</div>` : ""}</td><td class="mono">${fmt(r.p0)}–${fmt(r.p1)}</td><td class="mono">${fmt(r.r0)}–${fmt(r.r1)}</td><td class="mono">${Math.round((r.r1 - r.r0) / DAY) + 1} d</td><td>${dev}</td><td><span class="pill"><i style="background:${col}"></i>${STATUS_TXT[st]}</span></td></tr>`;
+    }
+  });
+  document.getElementById("tbl").innerHTML = t;
+  document.getElementById("foot").textContent = `Início ${fmt(D(PROJETO.inicio))}/2026 · Encerramento ${fmt(fim)}/2026 · "Hoje" = ${fmt(HOJE)}. Para mudar datas, edite o bloco DADOS DO CRONOGRAMA no código desta página.`;
+}
+
+// ---------- ações ----------
+document.getElementById("optBase").addEventListener("change", draw);
+document.getElementById("btnPrint").addEventListener("click", () => print());
+document.getElementById("btnTheme").addEventListener("click", () => {
+  const r = document.documentElement, dark = matchMedia("(prefers-color-scheme: dark)").matches;
+  const cur = r.dataset.theme || (dark ? "dark" : "light");
+  r.dataset.theme = cur === "dark" ? "light" : "dark";
+  try { localStorage.setItem("gantt-theme", r.dataset.theme); } catch (e) {}
+  draw();
+});
+try { const t = localStorage.getItem("gantt-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+document.getElementById("btnPng").addEventListener("click", () => {
+  const svg = document.querySelector("#chart svg");
+  const w = +svg.getAttribute("width"), h = +svg.getAttribute("height"), k = 2;
+  const img = new Image();
+  img.onload = () => {
+    const c = document.createElement("canvas"); c.width = w * k; c.height = h * k;
+    const g = c.getContext("2d"); g.scale(k, k); g.drawImage(img, 0, 0);
+    const a = document.createElement("a"); a.download = "gantt_placar_eletronico.png"; a.href = c.toDataURL("image/png"); a.click();
+  };
+  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(svg));
+});
+let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(draw, 120); });
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", draw);
+summary(); draw();
+if (EXPORT) document.body.classList.add("export");
+</script>
+</body>
+</html>

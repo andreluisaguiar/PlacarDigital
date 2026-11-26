@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Placar Eletrônico Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pcb:#0C211B; --pcb2:#133328; --trace:#1E4034; --mint:#9DB5AA; --ink:#EDEFEA;
+  --copper:#E0A458; --led:#FF4136; --ghost:#1B3A30;
+  --paper:#F3F6F4; --paper2:#E3EAE6; --pink:#0C211B; --pmuted:#4B6A5E; --pled:#D62C1F; --pcopper:#9A5B12;
+  --head:"Space Grotesk", Arial, sans-serif; --mono:"JetBrains Mono","Courier New",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#06120E;color:var(--ink);font-family:var(--head)}
+body{padding:24px 16px 80px}
+.deck{display:flex;flex-direction:column;align-items:center;gap:24px}
+.frame{width:min(100%,1280px);aspect-ratio:16/9;position:relative;overflow:hidden;border-radius:6px;box-shadow:0 10px 40px rgba(0,0,0,.45)}
+.slide{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0;transform:scale(var(--s,1));
+  background:var(--pcb);color:var(--ink);padding:56px 64px;overflow:hidden}
+.slide.light{background:var(--paper);color:var(--pink)}
+/* trilhas de cobre de fundo (motivo) */
+.traces{position:absolute;inset:0;pointer-events:none;opacity:.55}
+.light .traces{opacity:.9}
+.kicker{font-family:var(--mono);font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);font-weight:600}
+.light .kicker{color:var(--pcopper)}
+h1{font-size:72px;line-height:1.02;font-weight:700;letter-spacing:-.02em}
+h2{font-size:44px;line-height:1.08;font-weight:700;letter-spacing:-.015em;margin-top:12px;max-width:1000px}
+p,li{font-size:20px;line-height:1.4}
+.muted{color:var(--mint)} .light .muted{color:var(--pmuted)}
+.mono{font-family:var(--mono)}
+.num{position:absolute;right:64px;top:48px}
+.credit{position:absolute;font-family:var(--mono);font-size:11px;color:var(--mint);opacity:.85}
+.light .credit{color:var(--pmuted)}
+.led{color:var(--led)} .light .led{color:var(--pled)}
+.cu{color:var(--copper)} .light .cu{color:var(--pcopper)}
+.card{background:var(--pcb2);border-radius:10px;padding:22px 24px}
+.light .card{background:#fff;box-shadow:0 2px 10px rgba(12,33,27,.08)}
+.eq{font-family:var(--mono);font-size:22px;background:#06120E;color:var(--copper);border-radius:8px;padding:16px 20px;line-height:1.6}
+.eq b{color:var(--led);font-weight:700}
+img{display:block}
+.ph{object-fit:cover;border-radius:10px}
+/* controles */
+.hint{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:12px;color:var(--mint);background:rgba(6,18,14,.9);padding:8px 14px;border-radius:20px}
+body.present{padding:0;overflow:hidden;background:#000}
+body.present .deck{gap:0;height:100vh;justify-content:center}
+body.present .frame{display:none;border-radius:0;box-shadow:none;width:min(100vw,calc(100vh*16/9))}
+body.present .frame.on{display:block}
+body.present .hint{display:none}
+@media print{body{padding:0;background:none}.hint{display:none}.deck{gap:0}.frame{page-break-after:always;border-radius:0;box-shadow:none;width:100%}}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- 01 CAPA -->
+<section class="frame"><div class="slide" data-n="1">
+  <svg class="traces" data-traces="cover"></svg>
+  <div class="kicker">Circuitos Digitais · UFMA · Status em 20/11/2026</div>
+  <div style="position:absolute;left:64px;top:210px;width:600px">
+    <h1>Placar<br>Eletrônico<br>Digital</h1>
+    <p class="muted" style="margin-top:22px;font-size:22px">Um contador de pontos para dois jogadores, feito só com lógica digital: sem microcontrolador, sem código.</p>
+  </div>
+  <div style="position:absolute;right:64px;top:150px;width:470px;height:330px;background:#050D0A;border-radius:14px;padding:28px 34px;box-shadow:inset 0 0 0 2px #1E4034">
+    <div style="display:flex;justify-content:space-between" class="mono muted"><span style="font-size:14px">JOGADOR A</span><span style="font-size:14px">JOGADOR B</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px">
+      <span class="seg" data-v="7" data-w="150"></span>
+      <span style="display:flex;flex-direction:column;gap:34px"><i style="width:16px;height:16px;border-radius:50%;background:var(--led);display:block"></i><i style="width:16px;height:16px;border-radius:50%;background:var(--led);display:block"></i></span>
+      <span class="seg" data-v="3" data-w="150"></span>
+    </div>
+  </div>
+  <div style="position:absolute;left:64px;bottom:52px;right:64px;display:flex;justify-content:space-between;align-items:flex-end">
+    <div class="mono" style="font-size:15px;line-height:1.7">André Luís Aguiar · Guilherme Passinho · Hugo Oliveira · Raí Abreu</div>
+    <div class="mono muted" style="font-size:13px;text-align:right">Orientador<br><span style="color:var(--ink)">Prof. Luiz Henrique Neves Rodrigues</span></div>
+  </div>
+</div></section>
+
+<!-- 02 ONDE ESTAMOS -->
+<section class="frame"><div class="slide" data-n="2">
+  <div class="kicker">Onde estamos</div>
+  <h2>A execução terminou: o placar funciona na simulação e na protoboard</h2>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:56px">
+    <div class="card"><div class="seg-row" data-v="90" data-w="54"></div><div class="mono led" style="font-size:20px;margin-top:4px">% do prazo</div><p class="muted" style="margin-top:14px;font-size:17px">94 de 105 dias decorridos</p></div>
+    <div class="card"><div style="display:flex;align-items:flex-end;gap:8px"><span class="seg-row" data-v="14" data-w="54"></span><span class="mono muted" style="font-size:30px;padding-bottom:6px">/17</span></div><div class="mono led" style="font-size:20px;margin-top:4px">atividades</div><p class="muted" style="margin-top:14px;font-size:17px">1 em andamento, 2 pendentes</p></div>
+    <div class="card"><div style="display:flex;align-items:flex-end;gap:8px"><span class="seg-row" data-v="8" data-w="54"></span><span class="mono muted" style="font-size:30px;padding-bottom:6px">/8</span></div><div class="mono led" style="font-size:20px;margin-top:4px">testes ok</div><p class="muted" style="margin-top:14px;font-size:17px">T1–T7 na simulação e T8 na placa</p></div>
+    <div class="card"><div class="mono cu" style="font-size:20px">R$</div><div class="mono" style="font-size:52px;font-weight:700;line-height:1.05;color:var(--ink)">82,25</div><div class="mono led" style="font-size:20px;margin-top:4px">em materiais</div><p class="muted" style="margin-top:14px;font-size:17px">R$ 20,56 por integrante</p></div>
+  </div>
+  <p style="position:absolute;left:64px;bottom:60px;font-size:20px" class="muted">Fase atual: <span style="color:var(--ink)">Encerramento</span>. Faltam o relatório final (20/11), o TEP (21–24/11) e a apresentação (25/11–01/12).</p>
+</div></section>
+
+<!-- 03 O QUE É -->
+<section class="frame"><div class="slide" data-n="3" style="padding:0">
+  <img class="ph" src="../assets/web/scoreboard.jpg" alt="Placar digital de um clube de críquete" style="position:absolute;left:0;top:0;width:440px;height:720px;border-radius:0;object-position:50% 30%">
+  <div class="credit" style="left:16px;bottom:12px;color:#fff;text-shadow:0 1px 2px #000">Foto: Acabashi · CC BY-SA 4.0 · Wikimedia Commons</div>
+  <div style="position:absolute;left:504px;top:56px;right:64px">
+    <div class="kicker">O projeto</div>
+    <h2 style="font-size:40px">O mesmo princípio de um placar de quadra, em escala de bancada</h2>
+    <div style="display:flex;flex-direction:column;gap:22px;margin-top:40px">
+      <div style="display:flex;gap:22px;align-items:center"><span class="seg" data-v="1" data-w="40"></span><div><div style="font-size:22px;font-weight:600">Apertou, contou</div><p class="muted" style="font-size:18px">Cada jogador tem um botão que soma 1 ponto, de 0 a 9.</p></div></div>
+      <div style="display:flex;gap:22px;align-items:center"><span class="seg" data-v="2" data-w="40"></span><div><div style="font-size:22px;font-weight:600">Aparece no display</div><p class="muted" style="font-size:18px">Cada placar tem seu display de 7 segmentos.</p></div></div>
+      <div style="display:flex;gap:22px;align-items:center"><span class="seg" data-v="0" data-w="40"></span><div><div style="font-size:22px;font-weight:600">Um botão zera tudo</div><p class="muted" style="font-size:18px">O reset volta os dois placares para 0 ao mesmo tempo.</p></div></div>
+    </div>
+    <p class="mono muted" style="margin-top:36px;font-size:14px">Início 19/08 · Entrega 01/12 · Base: Tocci, Sistemas Digitais (11ª ed.) e datasheets</p>
+  </div>
+  <div class="num" data-num="3"></div>
+</div></section>
+
+<!-- 04 ARQUITETURA -->
+<section class="frame"><div class="slide light" data-n="4">
+  <div class="kicker">Arquitetura</div>
+  <h2>Três blocos em cadeia, repetidos para cada jogador</h2>
+  <div style="display:grid;grid-template-columns:1fr 40px 1fr 40px 1fr;align-items:stretch;margin-top:38px">
+    <div class="card" style="padding:0;overflow:hidden"><img src="../assets/web/componentes.jpg" alt="Resistores e capacitores em placa" style="width:100%;height:170px;object-fit:cover"><div style="padding:18px 22px"><div class="mono cu" style="font-size:13px">1 · ENTRADA</div><div style="font-size:24px;font-weight:700;margin-top:4px">Botões</div><p class="muted" style="font-size:17px;margin-top:6px">Botão de ponto com filtro RC anti-repique; reset com pull-down</p><div class="mono" style="font-size:14px;margin-top:10px">R = 10 kΩ · C = 10 µF</div></div></div>
+    <svg viewBox="0 0 40 40" style="align-self:center"><path d="M6 20h24m-8-8 8 8-8 8" stroke="#9A5B12" stroke-width="3" fill="none"/></svg>
+    <div class="card" style="padding:0;overflow:hidden"><img src="../assets/web/chips7400.jpg" alt="Circuitos integrados da série 74 em encapsulamento DIP" style="width:100%;height:170px;object-fit:cover"><div style="padding:18px 22px"><div class="mono cu" style="font-size:13px">2 · CONTAGEM</div><div style="font-size:24px;font-weight:700;margin-top:4px">Contador</div><p class="muted" style="font-size:17px;margin-top:6px">Contador de 4 bits limitado a 0–9 por duas portas OR no reset</p><div class="mono" style="font-size:14px;margin-top:10px">74HC93 + 74HC32</div></div></div>
+    <svg viewBox="0 0 40 40" style="align-self:center"><path d="M6 20h24m-8-8 8 8-8 8" stroke="#9A5B12" stroke-width="3" fill="none"/></svg>
+    <div class="card" style="padding:0;overflow:hidden"><img src="../assets/web/7seg2.jpg" alt="Display duplo de 7 segmentos" style="width:100%;height:170px;object-fit:cover"><div style="padding:18px 22px"><div class="mono cu" style="font-size:13px">3 · VISUALIZAÇÃO</div><div style="font-size:24px;font-weight:700;margin-top:4px">Display</div><p class="muted" style="font-size:17px;margin-top:6px">Decodificador BCD → 7 segmentos e display de catodo comum</p><div class="mono" style="font-size:14px;margin-top:10px">CD4511 + 7 × 330 Ω</div></div></div>
+  </div>
+  <p style="position:absolute;left:64px;bottom:40px;font-size:18px"><b>×2 jogadores:</b> <span class="muted">cada um tem contador, decodificador e display próprios. Um único 74HC32 (4 portas OR) e um só botão de reset atendem os dois.</span></p>
+  <div class="credit" style="right:64px;top:24px">Fotos: Soumyapatra13, JailsonBR, Haragayato · CC BY-SA 3.0 · Wikimedia Commons</div>
+</div></section>
+
+<!-- 05 CONTADOR -->
+<section class="frame"><div class="slide" data-n="5">
+  <svg class="traces" data-traces="a"></svg>
+  <div class="kicker">Bloco 2 · Contagem</div>
+  <h2>O 74HC93 conta de 0 a 9 e se zera sozinho ao chegar no 10</h2>
+  <div style="display:flex;gap:14px;margin-top:44px;align-items:flex-end">
+    <span class="seg" data-v="0" data-w="58"></span><span class="seg" data-v="1" data-w="58"></span><span class="seg" data-v="2" data-w="58"></span><span class="seg" data-v="3" data-w="58"></span><span class="seg" data-v="4" data-w="58"></span><span class="seg" data-v="5" data-w="58"></span><span class="seg" data-v="6" data-w="58"></span><span class="seg" data-v="7" data-w="58"></span><span class="seg" data-v="8" data-w="58"></span><span class="seg" data-v="9" data-w="58"></span>
+    <span style="display:flex;flex-direction:column;align-items:center;margin-left:10px;opacity:.45"><span class="seg-row" data-v="10" data-w="40" data-ghost="1"></span><span class="mono" style="font-size:12px;margin-top:6px">1010</span></span>
+    <svg width="60" height="40" viewBox="0 0 60 40" style="margin-bottom:30px"><path d="M4 20h44m-10-10 10 10-10 10" stroke="#E0A458" stroke-width="3" fill="none"/></svg>
+    <span class="seg" data-v="0" data-w="58"></span>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:44px">
+    <div class="eq">MR1 = Q1 + RST<br>MR2 = Q3 + RST<br><b>R0 = MR1·MR2 = Q1·Q3 + RST</b></div>
+    <div>
+      <p>O 10 (<span class="mono cu">1010</span>) é o primeiro estado com Q1 e Q3 em 1 ao mesmo tempo. Ele dispara o reset assíncrono e dura só alguns nanossegundos: <b>o 10 nunca aparece no display</b>.</p>
+      <p class="muted" style="margin-top:14px;font-size:18px">O mesmo par de portas OR recebe o botão de reset (RST).</p>
+    </div>
+  </div>
+  <div class="num" data-num="5"></div>
+</div></section>
+
+<!-- 06 DECODIFICADOR -->
+<section class="frame"><div class="slide light" data-n="6">
+  <div class="kicker">Bloco 3 · Visualização</div>
+  <h2>O CD4511 transforma 4 bits em 7 segmentos acesos</h2>
+  <div style="display:grid;grid-template-columns:300px 1fr;gap:56px;margin-top:36px;align-items:start">
+    <div style="background:#06120E;border-radius:14px;padding:26px 30px 18px;position:relative">
+      <span class="seg" data-v="8" data-w="170" data-labels="1"></span>
+      <div class="mono" style="color:var(--mint);font-size:13px;margin-top:10px;text-align:center">saídas a–g ativas em nível alto</div>
+    </div>
+    <div>
+      <div class="mono" style="font-size:19px;line-height:1.75">
+        <div>a = Q3 + Q2·Q0 + Q2'·Q1 + Q2'·Q0'</div>
+        <div>b = Q2' + Q1·Q0 + Q1'·Q0'</div>
+        <div style="background:#fff;border-radius:6px;padding:0 8px;margin-left:-8px;color:var(--pled);font-weight:700">c = Q2 + Q1' + Q0</div>
+        <div>d = Q1·Q0' + Q2'·Q1 + Q2'·Q0' + Q2·Q1'·Q0</div>
+        <div>e = Q1·Q0' + Q2'·Q0'</div>
+        <div>f = Q3 + Q2·Q0' + Q2·Q1' + Q1'·Q0'</div>
+        <div>g = Q3 + Q1·Q0' + Q2'·Q1 + Q2·Q1'</div>
+      </div>
+      <p class="muted" style="margin-top:20px;font-size:18px">Cada equação saiu de um mapa de Karnaugh, com 10 a 15 como <i>don't care</i>. O segmento c só apaga no 2, então sobram três grupos de oito células.</p>
+      <p class="mono" style="margin-top:14px;font-size:15px">LT' = 1 · BI' = 1 · LE = 0 → o display segue o contador direto</p>
+    </div>
+  </div>
+  <div class="num" data-num="6"></div>
+</div></section>
+
+<!-- 07 DEBOUNCE -->
+<section class="frame"><div class="slide" data-n="7">
+  <div class="kicker">Bloco 1 · Entrada</div>
+  <h2>Filtro RC: um toque no botão vale exatamente um ponto</h2>
+  <img src="../assets/img/osciloscopio.png" alt="Osciloscópio: contato do botão com bounce e sinal filtrado pelo RC" style="position:absolute;left:64px;top:206px;width:790px;border-radius:8px">
+  <div style="position:absolute;left:890px;top:206px;right:64px;display:flex;flex-direction:column;gap:18px">
+    <div><div class="mono cu" style="font-size:13px">O PROBLEMA</div><p style="font-size:18px;margin-top:4px">O contato oscila por ~1 ms ao fechar e abrir. Cada oscilação seria um ponto.</p></div>
+    <div><div class="mono cu" style="font-size:13px">A SOLUÇÃO</div><p style="font-size:18px;margin-top:4px">C1 carrega na hora e descarrega devagar por R1: o nível lógico não cai.</p></div>
+    <div class="eq" style="font-size:18px">τ = 10 kΩ × 10 µF<br><b>= 100 ms</b></div>
+    <p class="muted" style="font-size:16px">O ponto entra ao <b style="color:var(--ink)">soltar</b> o botão, ≈ 120 ms depois, na borda de descida.</p>
+  </div>
+  <div class="num" data-num="7"></div>
+</div></section>
+
+<!-- 08 SIMULAÇÃO TINKERCAD -->
+<section class="frame"><div class="slide light" data-n="8">
+  <div class="kicker">Simulação · Tinkercad Circuits</div>
+  <h2>O placar completo montado na protoboard virtual</h2>
+  <img src="../assets/img/tinkercad.png" alt="Placar de dois jogadores no Tinkercad" style="position:absolute;left:64px;top:196px;height:490px;border-radius:10px;background:#fff;box-shadow:0 2px 10px rgba(12,33,27,.1)">
+  <div style="position:absolute;left:760px;top:220px;right:64px;display:flex;flex-direction:column;gap:26px">
+    <div style="display:flex;gap:16px"><span class="mono cu" style="font-size:28px;font-weight:700">01</span><p>Uma protoboard por jogador, cada uma com <b>74HC93 → CD4511 → display</b>.</p></div>
+    <div style="display:flex;gap:16px"><span class="mono cu" style="font-size:28px;font-weight:700">02</span><p>O fio amarelo leva o <b>reset compartilhado</b> entre as duas placas.</p></div>
+    <div style="display:flex;gap:16px"><span class="mono cu" style="font-size:28px;font-weight:700">03</span><p>A montagem virtual virou o <b>mapa da física</b>: mesma posição de CIs e fios.</p></div>
+  </div>
+  <div class="num" data-num="8"></div>
+</div></section>
+
+<!-- 09 SIMULAÇÃO INSTRUMENTOS -->
+<section class="frame"><div class="slide" data-n="9">
+  <div class="kicker">Simulação · Esquemático e analisador lógico</div>
+  <h2>No analisador, a contagem passa de 9 para 0 sem mostrar o 10</h2>
+  <div style="position:absolute;left:64px;top:206px;width:560px">
+    <img src="../assets/img/esquematico.png" alt="Esquemático do módulo de um jogador no padrão Multisim" style="width:560px;border-radius:8px;background:#fff">
+    <p class="muted" style="font-size:16px;margin-top:12px">Esquemático do módulo de um jogador, no padrão Multisim.</p>
+  </div>
+  <div style="position:absolute;left:656px;top:206px;width:560px">
+    <img src="../assets/img/analisador.png" alt="Analisador lógico mostrando contagem de 0 a 9, reinício e reset" style="width:560px;border-radius:8px">
+    <p class="muted" style="font-size:16px;margin-top:12px">Analisador lógico (XLA1): 12 toques em S1, depois 1 toque em S2.</p>
+  </div>
+  <div style="position:absolute;left:64px;right:64px;top:548px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+    <div class="card"><div class="mono cu" style="font-size:13px">TOQUES 1 A 9</div><p style="font-size:18px;margin-top:6px">Q0–Q3 sobem em binário e o display mostra 0 → 9.</p></div>
+    <div class="card"><div class="mono cu" style="font-size:13px">10º TOQUE</div><p style="font-size:18px;margin-top:6px">Surge o <span class="mono led">1010</span>, R0 vai a 1 e o contador volta a 0000.</p></div>
+    <div class="card"><div class="mono cu" style="font-size:13px">TOQUE EM S2</div><p style="font-size:18px;margin-top:6px">O reset manual zera o placar a partir do 2.</p></div>
+  </div>
+  <div class="num" data-num="9"></div>
+</div></section>
+
+<!-- 10 TESTES -->
+<section class="frame"><div class="slide light" data-n="10">
+  <div class="kicker">Testes</div>
+  <h2>8 de 8 casos aprovados, da simulação à placa</h2>
+  <div id="tests" style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px"></div>
+  <p class="muted" style="position:absolute;left:64px;bottom:40px;font-size:17px">T1–T7 executados em simulação (21/10–03/11). T8 repetiu todos na montagem física (11–12/11).</p>
+  <div class="num" data-num="10"></div>
+</div></section>
+
+<!-- 11 MONTAGEM -->
+<section class="frame"><div class="slide" data-n="11">
+  <div class="kicker">Montagem física</div>
+  <h2>Da protoboard virtual para a bancada do laboratório</h2>
+  <img class="ph" src="../assets/img/montagem2.jpg" alt="Protoboard montada ao lado das fontes de bancada" style="position:absolute;left:64px;top:200px;width:736px;height:420px">
+  <img class="ph" src="../assets/img/montagem1.jpg" alt="Vista superior da protoboard com os CIs, botão e LEDs" style="position:absolute;left:828px;top:200px;width:388px;height:420px;object-position:50% 35%">
+  <p class="mono muted" style="position:absolute;left:64px;top:636px;font-size:14px">Bancada do laboratório: protoboard alimentada pela fonte de 5 V</p>
+  <p class="mono muted" style="position:absolute;left:828px;top:636px;font-size:14px">Vista de cima: CIs, botão e LEDs de teste</p>
+  <div class="num" data-num="11"></div>
+</div></section>
+
+<!-- 12 CUSTOS -->
+<section class="frame"><div class="slide light" data-n="12">
+  <div class="kicker">Custos</div>
+  <h2>R$ 82,25 para o placar completo, e mais da metade é reaproveitável</h2>
+  <div style="display:grid;grid-template-columns:300px 1fr;gap:56px;margin-top:40px">
+    <div>
+      <div class="mono cu" style="font-size:14px">TOTAL · SEM FRETE</div>
+      <div class="mono" style="font-size:52px;font-weight:700;line-height:1.15;white-space:nowrap;margin-top:6px">R$ 82,25</div>
+      <p class="muted" style="font-size:18px;margin-top:6px">R$ 20,56 por integrante</p>
+      <img class="ph" src="../assets/web/dip.jpg" alt="Circuitos integrados em encapsulamento DIP" style="width:300px;height:190px;margin-top:28px">
+      <div class="credit" style="position:static;margin-top:6px">Foto: Kimmo Palosaari · domínio público</div>
+    </div>
+    <div>
+      <div id="costbars"></div>
+      <p class="muted" style="font-size:16px;margin-top:20px">Preços à vista em lojas virtuais (consulta em 08/11/2026). Protoboards, jumpers e o módulo MB102 servem para outras disciplinas.</p>
+    </div>
+  </div>
+  <div class="num" data-num="12"></div>
+</div></section>
+
+<!-- 13 GANTT -->
+<section class="frame"><div class="slide light" data-n="13">
+  <div class="kicker">Cronograma · Gantt · 14 de 17 atividades concluídas</div>
+  <h2>Atraso de 4 dias, absorvido antes do fim</h2>
+  <img src="../assets/img/gantt.png" alt="Gráfico de Gantt previsto e realizado de 19/08 a 01/12/2026, com marcos, atraso de 4 dias na entrega dos componentes e linha de hoje em 20/11" style="position:absolute;left:64px;top:180px;width:1020px;border-radius:8px;box-shadow:0 2px 10px rgba(12,33,27,.08)">
+  <div style="position:absolute;left:1108px;top:200px;display:flex;flex-direction:column;gap:14px;font-size:14px;color:var(--pmuted)">
+    <span><i style="display:inline-block;width:20px;height:11px;border-radius:2px;background:#13875A;vertical-align:-1px;margin-right:8px"></i>Concluída</span>
+    <span><i style="display:inline-block;width:20px;height:11px;border-radius:2px;background:#2F6FD0;vertical-align:-1px;margin-right:8px"></i>Em andamento</span>
+    <span><i style="display:inline-block;width:20px;height:11px;border-radius:2px;border:1.5px solid #8AA39A;background:repeating-linear-gradient(45deg,#8AA39A 0 2px,transparent 2px 5px);vertical-align:-1px;margin-right:8px"></i>Pendente</span>
+    <span><i style="display:inline-block;width:20px;height:11px;border-radius:2px;border:1.5px solid #D62C1F;background:repeating-linear-gradient(45deg,#D62C1F 0 3px,transparent 3px 6px);vertical-align:-1px;margin-right:8px"></i>Atraso</span>
+    <span><i style="display:inline-block;width:20px;height:4px;border-radius:2px;background:#C9D5CF;vertical-align:2px;margin-right:8px"></i>Previsto</span>
+    <span><i style="display:inline-block;width:10px;height:10px;transform:rotate(45deg);background:#13875A;margin:0 13px 0 5px"></i>Marco</span>
+    <span style="margin-top:6px;font-family:var(--mono);font-size:12px;line-height:1.5"><b class="led" style="font-size:20px">+4 d</b><br>na entrega das peças</span>
+    <span style="font-family:var(--mono);font-size:12px;line-height:1.5"><b style="font-size:20px;color:var(--pink)">01/12</b><br>fim mantido</span>
+  </div>
+  <div class="num" data-num="13"></div>
+</div></section>
+
+<!-- 14 PROBLEMAS -->
+<section class="frame"><div class="slide light" data-n="14">
+  <div class="kicker">Problemas e melhorias</div>
+  <h2>O que observamos e o que fica para uma próxima versão</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:44px">
+    <div class="card" style="min-height:290px;padding:28px"><div class="mono" style="font-size:13px;color:var(--pcopper)">IMPACTO MÉDIO</div><div style="font-size:23px;font-weight:700;margin-top:8px">Borda lenta no clock</div><p class="muted" style="font-size:17px;margin-top:10px">O 74HC93 não tem Schmitt trigger e a descida do RC leva ≈ 120 ms.</p><p style="font-size:17px;margin-top:14px"><b>Melhoria:</b> um 74HC14 entre o RC e CP0, por menos de R$ 5.</p></div>
+    <div class="card" style="min-height:290px;padding:28px"><div class="mono" style="font-size:13px;color:var(--pmuted)">IMPACTO BAIXO</div><div style="font-size:23px;font-weight:700;margin-top:8px">Conta ao soltar</div><p class="muted" style="font-size:17px;margin-top:10px">O ponto entra na borda de descida, quando o botão é solto.</p><p style="font-size:17px;margin-top:14px"><b>Decisão:</b> comportamento aceito e documentado.</p></div>
+    <div class="card" style="min-height:290px;padding:28px"><div class="mono" style="font-size:13px;color:var(--pmuted)">IMPACTO BAIXO</div><div style="font-size:23px;font-weight:700;margin-top:8px">Só vai até 9</div><p class="muted" style="font-size:17px;margin-top:10px">Atende o escopo do TAP, mas limita partidas longas.</p><p style="font-size:17px;margin-top:14px"><b>Melhoria:</b> cascatear um segundo contador para 00–99.</p></div>
+  </div>
+  <p class="muted" style="position:absolute;left:64px;bottom:40px;font-size:17px">Resolvido: o placar começou com um jogador e foi replicado para dois, compartilhando o 74HC32.</p>
+  <div class="num" data-num="14"></div>
+</div></section>
+
+<!-- 15 PRÓXIMOS PASSOS -->
+<section class="frame"><div class="slide" data-n="15">
+  <svg class="traces" data-traces="b"></svg>
+  <div class="kicker">Próximos passos</div>
+  <h2>Três entregas até 01/12</h2>
+  <div style="position:relative;margin-top:70px;height:240px">
+    <div style="position:absolute;left:0;right:0;top:28px;height:3px;background:var(--trace)"></div>
+    <div style="position:absolute;left:0;width:30%;top:28px;height:3px;background:var(--led)"></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;position:relative">
+      <div><i style="display:block;width:22px;height:22px;border-radius:50%;background:var(--led);margin-top:19px;box-shadow:0 0 0 6px rgba(255,65,54,.2)"></i><div class="mono led" style="font-size:15px;margin-top:22px">HOJE · 20/11</div><div style="font-size:26px;font-weight:700;margin-top:6px">Relatório final</div><p class="muted" style="font-size:18px;margin-top:6px">Resultados da placa e prestação de contas dos materiais</p></div>
+      <div><i style="display:block;width:22px;height:22px;border-radius:50%;background:var(--pcb);border:3px solid var(--copper);margin-top:19px"></i><div class="mono cu" style="font-size:15px;margin-top:22px">21–24/11</div><div style="font-size:26px;font-weight:700;margin-top:6px">TEP</div><p class="muted" style="font-size:18px;margin-top:6px">Termo de Encerramento do Projeto, elaborado e aprovado</p></div>
+      <div><i style="display:block;width:22px;height:22px;border-radius:50%;background:var(--pcb);border:3px solid var(--copper);margin-top:19px"></i><div class="mono cu" style="font-size:15px;margin-top:22px">25/11–01/12</div><div style="font-size:26px;font-weight:700;margin-top:6px">Apresentação</div><p class="muted" style="font-size:18px;margin-top:6px">O placar funcionando ao vivo na protoboard</p></div>
+    </div>
+  </div>
+  <div class="card" style="position:absolute;left:64px;right:64px;bottom:52px;display:flex;gap:28px;align-items:center;padding:18px 24px">
+    <span class="mono cu" style="font-size:13px;white-space:nowrap">ANTES DA DEMO</span>
+    <p style="font-size:18px">Ensaiar o roteiro · conferir a alimentação · separar CIs e jumpers reserva</p>
+  </div>
+  <div class="num" data-num="15"></div>
+</div></section>
+
+<!-- 16 ENCERRAMENTO -->
+<section class="frame"><div class="slide" data-n="16">
+  <svg class="traces" data-traces="cover"></svg>
+  <div class="kicker">Encerramento</div>
+  <div style="position:absolute;left:64px;top:200px;width:620px">
+    <h1 style="font-size:64px">Placar zerado.<br><span class="led">Sua vez de perguntar.</span></h1>
+    <p class="muted" style="margin-top:24px;font-size:21px">Obrigado. A demonstração ao vivo fica para a apresentação final.</p>
+  </div>
+  <div style="position:absolute;right:64px;top:180px;width:420px;height:300px;background:#050D0A;border-radius:14px;padding:28px 34px;box-shadow:inset 0 0 0 2px #1E4034">
+    <div style="display:flex;justify-content:space-between" class="mono muted"><span style="font-size:14px">JOGADOR A</span><span style="font-size:14px">JOGADOR B</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px">
+      <span class="seg" data-v="0" data-w="136"></span>
+      <span style="display:flex;flex-direction:column;gap:30px"><i style="width:14px;height:14px;border-radius:50%;background:var(--led);display:block"></i><i style="width:14px;height:14px;border-radius:50%;background:var(--led);display:block"></i></span>
+      <span class="seg" data-v="0" data-w="136"></span>
+    </div>
+  </div>
+  <div class="mono muted" style="position:absolute;left:64px;bottom:52px;font-size:14px">Circuitos Digitais · Engenharia da Computação · UFMA · 2026</div>
+</div></section>
+
+</div>
+<div class="hint">P = modo apresentação · ← → navegam · Esc sai</div>
+
+<script>
+// ---------- display de 7 segmentos (SVG) ----------
+const MAP={0:"abcdef",1:"bc",2:"abged",3:"abgcd",4:"fgbc",5:"afgcd",6:"afgedc",7:"abc",8:"abcdefg",9:"abcfgd"};
+function segSVG(v,w,{ghost=false,labels=false,light=false}={}){
+  const W=60,H=104,t=10,g=2.2,L=5,R=55,T=5,M=52,B=99;
+  const Hs=(x1,x2,y)=>`${x1},${y} ${x1+t/2},${y-t/2} ${x2-t/2},${y-t/2} ${x2},${y} ${x2-t/2},${y+t/2} ${x1+t/2},${y+t/2}`;
+  const Vs=(x,y1,y2)=>`${x},${y1} ${x+t/2},${y1+t/2} ${x+t/2},${y2-t/2} ${x},${y2} ${x-t/2},${y2-t/2} ${x-t/2},${y1+t/2}`;
+  const S={a:Hs(L+g,R-g,T),g:Hs(L+g,R-g,M),d:Hs(L+g,R-g,B),f:Vs(L,T+g,M-g),b:Vs(R,T+g,M-g),e:Vs(L,M+g,B-g),c:Vs(R,M+g,B-g)};
+  const on=ghost?"":(MAP[v]||"");
+  const lit="#FF4136", off=light?"#D5DED9":"#1B3A30";
+  const h=w*H/W*1.0;
+  let s=`<svg width="${w}" height="${h}" viewBox="-4 -2 68 108" style="display:block;overflow:visible"><g transform="skewX(-6) translate(6,0)">`;
+  for(const k in S){const l=on.includes(k);s+=`<polygon points="${S[k]}" fill="${l?lit:off}"${l?' style="filter:drop-shadow(0 0 3px rgba(255,65,54,.55))"':''}/>`}
+  if(labels){const P={a:[30,-6],b:[66,28],c:[66,78],d:[30,114],e:[-8,78],f:[-8,28],g:[30,30]};
+    for(const k in P)s+=`<text x="${P[k][0]}" y="${P[k][1]}" font-family="JetBrains Mono,monospace" font-size="9" font-weight="700" fill="#06120E" text-anchor="middle" dominant-baseline="middle" style="paint-order:stroke" ${k==='g'?'':''}>${k}</text>`;}
+  return s+"</g></svg>";
+}
+document.querySelectorAll(".seg").forEach(el=>{el.style.display="inline-block";
+  el.innerHTML=segSVG(+el.dataset.v,+el.dataset.w,{labels:!!el.dataset.labels,light:el.closest(".light")&&!el.closest("[style*='06120E']")})});
+document.querySelectorAll(".seg-row").forEach(el=>{el.style.display="inline-flex";el.style.gap=(+el.dataset.w*.18)+"px";
+  el.innerHTML=[...el.dataset.v].map(c=>segSVG(+c,+el.dataset.w,{ghost:!!el.dataset.ghost})).join("")});
+// rótulos dos segmentos legíveis: desenha por fora em cor clara
+document.querySelectorAll(".seg[data-labels] text").forEach(t=>t.setAttribute("fill","#9DB5AA"));
+// número do slide em 7 segmentos
+document.querySelectorAll(".num").forEach(el=>{const n=String(el.dataset.num).padStart(2,"0");const light=!!el.closest(".light");
+  el.innerHTML=`<span style="display:inline-flex;gap:5px">${[...n].map(c=>segSVG(+c,18,{light})).join("")}</span>`});
+
+// ---------- trilhas de cobre (motivo de PCB) ----------
+function traces(svg,kind){
+  svg.setAttribute("viewBox","0 0 1280 720");svg.setAttribute("preserveAspectRatio","none");
+  const c="#1E4034", p=[];
+  if(kind==="cover"){p.push("M1280 560 H980 L930 610 H700","M1280 600 H1000 L950 650 H760","M1280 640 H1020 L990 670 H820","M0 120 H360 L400 80 H640","M0 160 H340 L380 120 H520");}
+  else if(kind==="a"){p.push("M1280 640 H1060 L1010 690 H860","M1280 680 H1090 L1070 700 H940");}
+  else {p.push("M1280 540 H1140 L1110 565 H960");}
+  svg.innerHTML=p.map(d=>`<path d="${d}" stroke="${c}" stroke-width="3" fill="none"/>`).join("")+
+    p.map(d=>{const m=d.match(/(-?\d+)\s*$/);const pts=d.trim().split(/\s+/);return ""}).join("")+
+    p.map(d=>{const nums=d.replace(/[MHL]/g," ").trim().split(/\s+/).map(Number);let x=nums[0],y=nums[1];
+      // ponto final
+      const toks=d.split(/(?=[MHL])/);let cx=0,cy=0;toks.forEach(tk=>{const a=tk.slice(1).trim().split(/\s+/).map(Number);if(tk[0]==="M"||tk[0]==="L"){cx=a[0];cy=a[1]}else if(tk[0]==="H"){cx=a[0]}});
+      return `<circle cx="${cx}" cy="${cy}" r="7" fill="none" stroke="#E0A458" stroke-opacity=".55" stroke-width="3"/>`}).join("");
+}
+document.querySelectorAll("svg.traces").forEach(s=>traces(s,s.dataset.traces));
+
+// ---------- testes ----------
+const T=[["T1","Um toque a partir de 0","Display vai para 1","sim"],["T2","Nove toques seguidos","0 → 9 sem saltos","sim"],["T3","Toque com display em 9","Volta para 0","sim"],["T4","Reset em qualquer valor","Os dois displays vão a 0","sim"],
+ ["T5","Reset pressionado + toque","Contagem presa em 0","sim"],["T6","Toques rápidos seguidos","Um ponto por toque","sim"],["T7","Ponto do jogador A","Placar B não muda","sim"],["T8","T1–T7 na montagem física","Igual à simulação","placa"]];
+document.getElementById("tests").innerHTML=T.map(([id,e,r,w])=>`<div class="card" style="padding:22px 22px;min-height:178px;${w==="placa"?"background:#0C211B;color:#EDEFEA":""}">
+  <div style="display:flex;justify-content:space-between;align-items:center"><span class="mono" style="font-size:30px;font-weight:700;color:${w==="placa"?"#FF4136":"#D62C1F"}">${id}</span>
+  <span class="mono" style="font-size:12px;color:${w==="placa"?"#E0A458":"#4B6A5E"}">✓ ${w==="placa"?"PLACA":"SIMULAÇÃO"}</span></div>
+  <div style="font-size:20px;font-weight:600;margin-top:16px">${e}</div><div style="font-size:17px;margin-top:8px;color:${w==="placa"?"#9DB5AA":"#4B6A5E"}">→ ${r}</div></div>`).join("");
+
+// ---------- custos ----------
+const C=[["Montagem e alimentação","protoboards, jumpers, MB102",48.00],["Circuitos integrados","2× 74HC93, 2× CD4511, 1× 74HC32",22.50],["Displays, botões e passivos","2 displays, 3 botões, resistores, capacitores",11.75]];
+const max=48;
+document.getElementById("costbars").innerHTML=C.map(([n,d,v])=>`<div style="margin-bottom:26px">
+  <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:21px;font-weight:600">${n}</span><span class="mono" style="font-size:22px;font-weight:700">R$ ${v.toFixed(2).replace(".",",")} <span style="font-size:14px;color:#4B6A5E;font-weight:400">${Math.round(v/82.25*100)}%</span></span></div>
+  <div style="height:22px;background:#E3EAE6;border-radius:4px;margin-top:8px"><div style="height:100%;width:${v/max*100}%;background:#0C211B;border-radius:4px"></div></div>
+  <div style="font-size:15px;color:#4B6A5E;margin-top:6px">${d}</div></div>`).join("");
+
+// ---------- escala e navegação ----------
+const frames=[...document.querySelectorAll(".frame")];
+function fit(){frames.forEach(f=>f.firstElementChild.style.setProperty("--s",f.clientWidth/1280))}
+addEventListener("resize",fit);fit();
+let cur=0;
+function show(i){cur=Math.max(0,Math.min(frames.length-1,i));frames.forEach((f,k)=>f.classList.toggle("on",k===cur));fit()}
+addEventListener("keydown",e=>{
+  const pres=document.body.classList.contains("present");
+  if(e.key==="p"||e.key==="P"){document.body.classList.toggle("present");show(cur);return}
+  if(e.key==="Escape"){document.body.classList.remove("present");fit();frames[cur].scrollIntoView();return}
+  if(["ArrowRight","PageDown"," "].includes(e.key)){e.preventDefault();pres?show(cur+1):frames[Math.min(frames.length-1,cur+1)].scrollIntoView({behavior:"smooth"});if(!pres)cur=Math.min(frames.length-1,cur+1)}
+  if(["ArrowLeft","PageUp"].includes(e.key)){e.preventDefault();pres?show(cur-1):frames[Math.max(0,cur-1)].scrollIntoView({behavior:"smooth"});if(!pres)cur=Math.max(0,cur-1)}
+});
+document.addEventListener("click",e=>{if(document.body.classList.contains("present"))show(cur+(e.clientX>innerWidth/2?1:-1))});
+</script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<title>Roteiro de Falas</title>
+<style>
+@page { size: A4; margin: 16mm 15mm 16mm 15mm; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Space Grotesk", "DejaVu Sans", Arial, sans-serif; color: #0C211B; font-size: 10.5pt; line-height: 1.45; background: #fff; }
+.mono { font-family: "JetBrains Mono", "DejaVu Sans Mono", "Courier New", monospace; }
+.kicker { font-family: "DejaVu Sans Mono", "Courier New", monospace; font-size: 8pt; letter-spacing: .14em; text-transform: uppercase; color: #9A5B12; font-weight: 700; }
+h1 { font-size: 24pt; line-height: 1.1; margin: 6px 0 4px; }
+h2 { font-size: 14pt; margin: 18px 0 8px; }
+h3 { font-size: 12pt; }
+.sub { color: #4B6A5E; font-size: 10.5pt; }
+.badge { display: inline-block; color: #fff; font-size: 8.5pt; font-weight: 700; padding: 2px 9px; border-radius: 10px; white-space: nowrap; }
+table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid #E3EAE6; font-size: 10pt; }
+th { font-size: 8pt; text-transform: uppercase; letter-spacing: .08em; color: #4B6A5E; }
+.nota { background: #F3F6F4; border-radius: 6px; padding: 10px 12px; margin-top: 12px; font-size: 9.5pt; color: #2C4A3F; }
+.fala { display: grid; grid-template-columns: 62mm 1fr; gap: 6mm; padding: 5mm 0; border-top: 1px solid #E3EAE6; break-inside: avoid; }
+.thumb img { width: 62mm; border-radius: 4px; border: 1px solid #D5DED9; display: block; }
+.sn { font-family: "DejaVu Sans Mono", "Courier New", monospace; font-size: 8pt; color: #4B6A5E; margin-top: 3px; }
+.head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+.head h3 { margin-right: 4px; }
+.tempo { font-family: "DejaVu Sans Mono", "Courier New", monospace; font-size: 8.5pt; color: #4B6A5E; margin-left: auto; }
+.txt p { margin-bottom: 5px; }
+.txt { border-left: 3px solid var(--c); padding-left: 4mm; }
+.dica { margin-top: 6px; font-size: 9pt; color: #4B6A5E; background: #F3F6F4; padding: 5px 8px; border-radius: 4px; }
+.q { padding: 8px 0; border-top: 1px solid #E3EAE6; break-inside: avoid; }
+.qh { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 3px; }
+.capa { break-after: page; }
+.pb { break-before: page; }
+</style></head>
+<body>
+<div class="capa">
+  <div class="kicker">Circuitos Digitais · UFMA · Apresentação de status · 20/11/2026</div>
+  <h1>Placar Eletrônico Digital<br>Roteiro de falas</h1>
+  <p class="sub">Quem fala em cada slide, o que dizer e quanto tempo leva. Orientador: Prof. Luiz Henrique Neves Rodrigues.</p>
+
+  <h2>Divisão</h2>
+  <table>
+    <tr><th>Integrante</th><th>Slides</th><th>Qtd.</th><th>Tempo</th></tr>
+    <tr><td><span class="badge" style="background:#D62C1F">André Luís Aguiar</span></td><td>1–3, 16</td><td>4</td><td>≈ 2:05</td></tr><tr><td><span class="badge" style="background:#9A5B12">Guilherme Passinho</span></td><td>4–7</td><td>4</td><td>≈ 3:25</td></tr><tr><td><span class="badge" style="background:#1F6F54">Hugo Oliveira</span></td><td>8–11</td><td>4</td><td>≈ 2:10</td></tr><tr><td><span class="badge" style="background:#2F4F8F">Raí Abreu</span></td><td>12–15</td><td>4</td><td>≈ 3:00</td></tr>
+    <tr><td><b>Total</b></td><td>1–16</td><td>16</td><td><b>≈ 10:40</b></td></tr>
+  </table>
+  <div class="nota">
+    <b>Lógica da divisão:</b> André abre e fecha (contexto e status); Guilherme explica os três blocos do circuito;
+    Hugo cobre simulação, testes e montagem; Raí fecha com custos, cronograma, problemas e próximos passos.
+    Os tempos foram estimados a 140 palavras por minuto, sem contar as perguntas. As falas são uma base:
+    adaptem para o jeito de cada um falar.
+  </div>
+
+  <h2>Passagens de palavra</h2>
+  <table>
+    <tr><th>Depois do slide</th><th>De</th><th>Para</th><th>Frase de ligação</th></tr>
+    <tr><td>3</td><td><span class="badge" style="background:#D62C1F">André Luís Aguiar</span></td><td><span class="badge" style="background:#9A5B12">Guilherme Passinho</span></td><td>“Agora o Guilherme explica como o circuito foi organizado.”</td></tr>
+    <tr><td>7</td><td><span class="badge" style="background:#9A5B12">Guilherme Passinho</span></td><td><span class="badge" style="background:#1F6F54">Hugo Oliveira</span></td><td>“Com os três blocos explicados, o Hugo mostra a simulação e os testes.”</td></tr>
+    <tr><td>11</td><td><span class="badge" style="background:#1F6F54">Hugo Oliveira</span></td><td><span class="badge" style="background:#2F4F8F">Raí Abreu</span></td><td>“Agora o Raí apresenta os custos e o cronograma.”</td></tr>
+    <tr><td>15</td><td><span class="badge" style="background:#2F4F8F">Raí Abreu</span></td><td><span class="badge" style="background:#D62C1F">André Luís Aguiar</span></td><td>(o André retoma para o encerramento)</td></tr>
+  </table>
+</div>
+
+
+<section class="fala" style="--c:#D62C1F">
+  <div class="thumb"><img src="thumbs/s-01.jpg" alt="Slide 1"><div class="sn">Slide 01</div></div>
+  <div class="txt">
+    <div class="head"><h3>Capa</h3><span class="badge" style="background:#D62C1F">André Luís Aguiar</span><span class="tempo">≈ 0:25</span></div>
+    <p>Boa tarde. Nós somos André, Guilherme, Hugo e Raí, e vamos apresentar o projeto de Circuitos Digitais orientado pelo professor Luiz Henrique: o Placar Eletrônico Digital.</p><p>A ideia é um placar de pontos para dois jogadores feito só com circuitos integrados de lógica digital. Não tem microcontrolador nem uma linha de código. Tudo o que vocês vão ver é contagem, decodificação e lógica combinacional.</p><div class="dica"><b>Dica:</b> Apontar para o placar 7 : 3 da capa: “é isso que o circuito faz”.</div>
+  </div>
+</section>
+<section class="fala" style="--c:#D62C1F">
+  <div class="thumb"><img src="thumbs/s-02.jpg" alt="Slide 2"><div class="sn">Slide 02</div></div>
+  <div class="txt">
+    <div class="head"><h3>Onde estamos</h3><span class="badge" style="background:#D62C1F">André Luís Aguiar</span><span class="tempo">≈ 0:40</span></div>
+    <p>Começando pelo resumo. Hoje, 20 de novembro, já se passaram 94 dos 105 dias do projeto, cerca de 90% do prazo.</p><p>Das 17 atividades do cronograma, 14 estão concluídas. Uma está em andamento, o relatório final, e duas estão pendentes: o TEP e a apresentação final.</p><p>Os oito casos de teste foram aprovados: sete na simulação e o oitavo, que repete todos eles, na montagem física. O custo total dos materiais ficou em 82 reais e 25 centavos, uns 20 reais por integrante.</p><p>Ou seja, a fase de execução terminou e estamos no encerramento.</p>
+  </div>
+</section>
+<section class="fala" style="--c:#D62C1F">
+  <div class="thumb"><img src="thumbs/s-03.jpg" alt="Slide 3"><div class="sn">Slide 03</div></div>
+  <div class="txt">
+    <div class="head"><h3>O projeto</h3><span class="badge" style="background:#D62C1F">André Luís Aguiar</span><span class="tempo">≈ 0:35</span></div>
+    <p>O princípio é o mesmo de um placar de quadra, como o da foto, só que em escala de bancada. São três requisitos.</p><p>Primeiro: cada jogador tem um botão, e cada toque soma um ponto, de 0 a 9. Segundo: cada placar aparece no seu próprio display de sete segmentos. Terceiro: um único botão de reset zera os dois placares ao mesmo tempo.</p><p>A base teórica foi o livro do Tocci, Sistemas Digitais, e os datasheets dos componentes. Agora o Guilherme explica como o circuito foi organizado.</p><div class="dica"><b>Dica:</b> Passar a palavra para o Guilherme.</div>
+  </div>
+</section>
+<section class="fala" style="--c:#9A5B12">
+  <div class="thumb"><img src="thumbs/s-04.jpg" alt="Slide 4"><div class="sn">Slide 04</div></div>
+  <div class="txt">
+    <div class="head"><h3>Arquitetura</h3><span class="badge" style="background:#9A5B12">Guilherme Passinho</span><span class="tempo">≈ 0:55</span></div>
+    <p>Dividimos o circuito em três blocos ligados em cadeia, e essa cadeia se repete para cada jogador.</p><p>O primeiro bloco é a entrada: o botão de ponto, com um filtro RC de 10 quilo-ohms e 10 microfarads, e o botão de reset, com um resistor de pull-down.</p><p>O segundo é a contagem: um contador 74HC93, limitado de 0 a 9 por duas portas OR do 74HC32.</p><p>O terceiro é a visualização: o decodificador CD4511, que converte o código binário para os sete segmentos, e um display de catodo comum com resistores de 330 ohms.</p><p>Como são dois jogadores, cada um tem seu contador, decodificador e display. O 74HC32 tem quatro portas OR, então um único chip atende os dois placares, e o botão de reset também é compartilhado.</p>
+  </div>
+</section>
+<section class="fala" style="--c:#9A5B12">
+  <div class="thumb"><img src="thumbs/s-05.jpg" alt="Slide 5"><div class="sn">Slide 05</div></div>
+  <div class="txt">
+    <div class="head"><h3>O contador</h3><span class="badge" style="background:#9A5B12">Guilherme Passinho</span><span class="tempo">≈ 0:55</span></div>
+    <p>O 74HC93 é um contador binário assíncrono de 4 bits. Ligando a saída Q0 na entrada CP1, ele conta de 0 a 15, avançando na borda de descida do clock.</p><p>Ele zera quando as duas entradas de reset, MR1 e MR2, estão em nível alto. Como queremos parar no 9, ligamos uma porta OR em cada uma: MR1 = Q1 + RST e MR2 = Q3 + RST. Pela propriedade distributiva, o reset interno fica R0 = Q1·Q3 + RST.</p><p>O número 10, em binário 1010, é o primeiro estado em que Q1 e Q3 valem 1 juntos. Nesse instante o contador zera, em alguns nanossegundos. Por isso o 10 nunca chega a aparecer no display: depois do 9 vem direto o 0.</p><div class="dica"><b>Dica:</b> Apontar para a sequência de dígitos: o 10 aparece apagado antes do 0.</div>
+  </div>
+</section>
+<section class="fala" style="--c:#9A5B12">
+  <div class="thumb"><img src="thumbs/s-06.jpg" alt="Slide 6"><div class="sn">Slide 06</div></div>
+  <div class="txt">
+    <div class="head"><h3>O decodificador</h3><span class="badge" style="background:#9A5B12">Guilherme Passinho</span><span class="tempo">≈ 0:45</span></div>
+    <p>O CD4511 recebe os quatro bits do contador e acende os segmentos de a até g. As saídas são ativas em nível alto, o que combina com display de catodo comum.</p><p>Deixamos o teste de lâmpadas e o apagamento desligados e o latch transparente. Assim o display segue o contador direto.</p><p>Para documentar a lógica interna, simplificamos cada segmento por mapa de Karnaugh, usando as combinações de 10 a 15 como don&#x27;t care, já que o contador nunca fica nelas. O exemplo destacado é o segmento c: ele só apaga no dígito 2, e a expressão mínima fica c = Q2 + Q1&#x27; + Q0.</p>
+  </div>
+</section>
+<section class="fala" style="--c:#9A5B12">
+  <div class="thumb"><img src="thumbs/s-07.jpg" alt="Slide 7"><div class="sn">Slide 07</div></div>
+  <div class="txt">
+    <div class="head"><h3>O filtro RC</h3><span class="badge" style="background:#9A5B12">Guilherme Passinho</span><span class="tempo">≈ 0:55</span></div>
+    <p>O último bloco resolve um problema físico. Ao apertar ou soltar, o contato do botão oscila por cerca de um milissegundo. É o bounce. Como o contador reage a bordas, cada oscilação poderia virar um ponto.</p><p>O capacitor resolve isso: quando o botão fecha, ele carrega na hora; nas aberturas rápidas do bounce, descarrega devagar pelo resistor. A constante de tempo é de 100 milissegundos, então a tensão não chega a cair abaixo do nível lógico.</p><p>No osciloscópio, em cima está o contato com as oscilações e embaixo o sinal filtrado, limpo. Um detalhe: o ponto é contado quando o botão é solto, cerca de 120 milissegundos depois, na borda de descida.</p><p>Com os três blocos explicados, o Hugo mostra a simulação e os testes.</p><div class="dica"><b>Dica:</b> Passar a palavra para o Hugo.</div>
+  </div>
+</section>
+<section class="fala" style="--c:#1F6F54">
+  <div class="thumb"><img src="thumbs/s-08.jpg" alt="Slide 8"><div class="sn">Slide 08</div></div>
+  <div class="txt">
+    <div class="head"><h3>Simulação no Tinkercad</h3><span class="badge" style="background:#1F6F54">Hugo Oliveira</span><span class="tempo">≈ 0:30</span></div>
+    <p>Antes de comprar qualquer peça, montamos o placar completo no Tinkercad Circuits.</p><p>São duas protoboards, uma por jogador, e cada uma tem o caminho 74HC93, CD4511 e display. O fio amarelo leva o reset compartilhado entre as duas placas.</p><p>Essa montagem virtual serviu de mapa para a montagem física: os CIs e os fios ficam na mesma posição, o que reduziu bastante os erros na bancada.</p>
+  </div>
+</section>
+<section class="fala" style="--c:#1F6F54">
+  <div class="thumb"><img src="thumbs/s-09.jpg" alt="Slide 9"><div class="sn">Slide 09</div></div>
+  <div class="txt">
+    <div class="head"><h3>Esquemático e analisador lógico</h3><span class="badge" style="background:#1F6F54">Hugo Oliveira</span><span class="tempo">≈ 0:40</span></div>
+    <p>Também documentamos o circuito no padrão do Multisim. À esquerda está o esquemático do módulo de um jogador, com referências, pinos e o display.</p><p>À direita está o analisador lógico. Damos doze toques no botão de ponto e depois um no reset. Nos nove primeiros toques, as saídas sobem em binário e o display vai de 0 a 9.</p><p>No décimo toque aparece o estado 1010 por um instante; o sinal R0 vai a 1 e o contador volta para 0000. Depois, o reset manual zera o placar a partir do 2.</p><div class="dica"><b>Dica:</b> Apontar o pulso estreito de R0 no 10º toque.</div>
+  </div>
+</section>
+<section class="fala" style="--c:#1F6F54">
+  <div class="thumb"><img src="thumbs/s-10.jpg" alt="Slide 10"><div class="sn">Slide 10</div></div>
+  <div class="txt">
+    <div class="head"><h3>Testes</h3><span class="badge" style="background:#1F6F54">Hugo Oliveira</span><span class="tempo">≈ 0:35</span></div>
+    <p>Fizemos oito casos de teste. Os sete primeiros, na simulação: um toque a partir do zero, nove toques seguidos sem pular número, o retorno do 9 para o 0, o reset em qualquer valor, o reset pressionado bloqueando a contagem, toques rápidos sem contagem dupla e a independência entre os placares: o ponto do jogador A não mexe no B.</p><p>O teste T8 repetiu todos eles na montagem física, com o mesmo resultado da simulação. Por isso o placar está oito de oito.</p>
+  </div>
+</section>
+<section class="fala" style="--c:#1F6F54">
+  <div class="thumb"><img src="thumbs/s-11.jpg" alt="Slide 11"><div class="sn">Slide 11</div></div>
+  <div class="txt">
+    <div class="head"><h3>Montagem física</h3><span class="badge" style="background:#1F6F54">Hugo Oliveira</span><span class="tempo">≈ 0:25</span></div>
+    <p>Com tudo validado na simulação, compramos os materiais e montamos o circuito na protoboard, seguindo a mesma disposição do Tinkercad.</p><p>Nas fotos está a bancada do laboratório, com a protoboard alimentada pela fonte de 5 volts, e a vista de cima, com os CIs, o botão e os LEDs de teste.</p><p>Agora o Raí apresenta os custos e o cronograma.</p><div class="dica"><b>Dica:</b> Passar a palavra para o Raí. Conferir antes se as fotos são as mais recentes da montagem.</div>
+  </div>
+</section>
+<section class="fala" style="--c:#2F4F8F">
+  <div class="thumb"><img src="thumbs/s-12.jpg" alt="Slide 12"><div class="sn">Slide 12</div></div>
+  <div class="txt">
+    <div class="head"><h3>Custos</h3><span class="badge" style="background:#2F4F8F">Raí Abreu</span><span class="tempo">≈ 0:35</span></div>
+    <p>O custo de referência do placar completo, para os dois jogadores, foi de 82 reais e 25 centavos, sem frete. Dá 20 reais e 56 centavos por integrante.</p><p>A maior parte, 48 reais, ou 58%, é de protoboards, jumpers e o módulo de alimentação MB102, itens que reaproveitamos em outras disciplinas. Os circuitos integrados custaram 22 reais e 50 centavos, cerca de 27%. Displays, botões, resistores e capacitores somaram 11 reais e 75 centavos.</p><p>Os preços foram consultados em lojas virtuais em 8 de novembro, à vista.</p>
+  </div>
+</section>
+<section class="fala" style="--c:#2F4F8F">
+  <div class="thumb"><img src="thumbs/s-13.jpg" alt="Slide 13"><div class="sn">Slide 13</div></div>
+  <div class="txt">
+    <div class="head"><h3>Cronograma (Gantt)</h3><span class="badge" style="background:#2F4F8F">Raí Abreu</span><span class="tempo">≈ 1:05</span></div>
+    <p>Este é o gráfico de Gantt, com o previsto e o realizado. A faixa cinza embaixo de cada barra é o que foi planejado no Termo de Abertura, os losangos são os marcos e a linha tracejada vermelha marca hoje, 20 de novembro.</p><p>A pedido do professor, todos os testes ficaram na fase de Monitoramento e Testes: a verificação dos módulos, os testes em simulação, o teste físico e a validação final. Na Execução ficou só a construção do circuito.</p><p>Tivemos um atraso: a entrega dos componentes estava prevista para 3 de novembro e só chegou no dia 7, quatro dias depois. Com isso, a montagem, o teste físico e a validação foram empurrados, e a validação terminou em 13 de novembro, e não no dia 10.</p><p>Como o relatório final começou no prazo, em paralelo, a folga absorveu esse atraso. Nenhum marco do encerramento mudou e o projeto continua terminando em 1º de dezembro.</p><div class="dica"><b>Dica:</b> Apontar o trecho hachurado em vermelho da aquisição dos materiais.</div>
+  </div>
+</section>
+<section class="fala" style="--c:#2F4F8F">
+  <div class="thumb"><img src="thumbs/s-14.jpg" alt="Slide 14"><div class="sn">Slide 14</div></div>
+  <div class="txt">
+    <div class="head"><h3>Problemas e melhorias</h3><span class="badge" style="background:#2F4F8F">Raí Abreu</span><span class="tempo">≈ 0:50</span></div>
+    <p>Registramos três pontos. O de impacto médio é a borda lenta no clock: o 74HC93 não tem entrada Schmitt trigger, e a descida do filtro RC leva uns 120 milissegundos. Como melhoria para uma próxima versão, dá para colocar um 74HC14 entre o filtro e o contador, por menos de 5 reais.</p><p>O segundo é que o ponto conta ao soltar o botão, não ao apertar. Aceitamos e documentamos esse comportamento.</p><p>O terceiro é que o placar vai só até 9. Isso atende o escopo, mas dá para cascatear um segundo contador e chegar a 99. E um problema que já resolvemos: o placar começou com um jogador e foi estendido para dois.</p>
+  </div>
+</section>
+<section class="fala" style="--c:#2F4F8F">
+  <div class="thumb"><img src="thumbs/s-15.jpg" alt="Slide 15"><div class="sn">Slide 15</div></div>
+  <div class="txt">
+    <div class="head"><h3>Próximos passos</h3><span class="badge" style="background:#2F4F8F">Raí Abreu</span><span class="tempo">≈ 0:30</span></div>
+    <p>Faltam três entregas. Hoje, o relatório final, com os resultados da placa e a prestação de contas dos materiais. De 21 a 24 de novembro, o Termo de Encerramento do Projeto. E de 25 de novembro a 1º de dezembro, a apresentação final, com o placar funcionando ao vivo.</p><p>Antes da demonstração, vamos ensaiar o roteiro, conferir a alimentação e levar CIs e jumpers reserva.</p><div class="dica"><b>Dica:</b> Passar a palavra de volta para o André.</div>
+  </div>
+</section>
+<section class="fala" style="--c:#D62C1F">
+  <div class="thumb"><img src="thumbs/s-16.jpg" alt="Slide 16"><div class="sn">Slide 16</div></div>
+  <div class="txt">
+    <div class="head"><h3>Encerramento</h3><span class="badge" style="background:#D62C1F">André Luís Aguiar</span><span class="tempo">≈ 0:20</span></div>
+    <p>Para fechar: o placar já funciona na simulação e na protoboard, dentro do prazo e com um custo baixo. A demonstração ao vivo fica para a apresentação final.</p><p>Obrigado. O placar está zerado, agora é a vez de vocês: ficamos à disposição para perguntas.</p><div class="dica"><b>Dica:</b> Nas perguntas, cada um responde pela sua parte (quadro abaixo).</div>
+  </div>
+</section>
+
+<div class="pb">
+  <div class="kicker">Para as perguntas</div>
+  <h2 style="margin-top:6px">Perguntas prováveis e quem responde</h2>
+  <div class='q'><div class='qh'><b>Por que o 10 não aparece no display?</b><span class="badge" style="background:#9A5B12">Guilherme Passinho</span></div><p>Porque o 1010 dispara o reset na hora: R0 = Q1·Q3 vai a 1 e o contador zera em nanossegundos, rápido demais para o display mostrar.</p></div><div class='q'><div class='qh'><b>Por que o ponto conta ao soltar o botão?</b><span class="badge" style="background:#9A5B12">Guilherme Passinho</span></div><p>O 74HC93 avança na borda de descida. Com o filtro RC, essa borda só acontece depois que o botão é solto, cerca de 120 ms depois.</p></div><div class='q'><div class='qh'><b>Por que um filtro RC e não um Schmitt trigger?</b><span class="badge" style="background:#9A5B12">Guilherme Passinho</span></div><p>O RC resolveu o bounce com dois componentes baratos. O 74HC14 (Schmitt trigger) fica como melhoria, porque a borda lenta pode gerar contagem dupla em alguns casos.</p></div><div class='q'><div class='qh'><b>Como vocês sabem que funciona?</b><span class="badge" style="background:#1F6F54">Hugo Oliveira</span></div><p>Pelos casos T1 a T7 na simulação, pelo analisador lógico e pelo T8, que repetiu todos na montagem física com o mesmo resultado.</p></div><div class='q'><div class='qh'><b>Dá para contar até 99?</b><span class="badge" style="background:#2F4F8F">Raí Abreu</span></div><p>Sim: basta cascatear um segundo contador para as dezenas, com outro decodificador e display. Ficou fora porque o escopo do TAP é de 0 a 9.</p></div><div class='q'><div class='qh'><b>Quanto custou e o que dá para reaproveitar?</b><span class="badge" style="background:#2F4F8F">Raí Abreu</span></div><p>R$ 82,25 no total. Protoboards, jumpers e o MB102 (R$ 48,00, 58%) servem para outras disciplinas.</p></div>
+</div>
+</body></html>
