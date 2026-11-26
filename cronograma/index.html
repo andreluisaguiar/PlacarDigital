@@ -130,6 +130,7 @@ body.export .chart{padding:0;overflow:visible}
    prev = previsto (linha de base do TAP) · real = realizado / reprogramado
    Se "real" for omitido, vale o previsto.
    Marcos: tipo "marco" com uma data só.
+   pendente: true = passou do previsto e ainda não terminou; o realizado vai até "hoje" e conta como atraso.
    ===================================================================== */
 const PROJETO = {
   inicio: "2026-08-19",
@@ -172,8 +173,9 @@ const FASES = [
     { nome: "Redação do relatório final", prev: ["2026-11-11", "2026-11-20"],
       obs: "Começou no prazo, em paralelo com a validação; os resultados da placa entraram até 13/11." },
     { tipo: "marco", nome: "Relatório final entregue", prev: "2026-11-20" },
-    { nome: "Elaboração e aprovação do TEP", prev: ["2026-11-21", "2026-11-24"] },
-    { tipo: "marco", nome: "TEP aprovado", prev: "2026-11-24" },
+    { nome: "Elaboração e aprovação do TEP", prev: ["2026-11-21", "2026-11-24"], pendente: true,
+      obs: "TEP elaborado no prazo; a aprovação está atrasada e ainda não saiu." },
+    { tipo: "marco", nome: "TEP aprovado", prev: "2026-11-24", pendente: true },
     { nome: "Apresentação final do projeto", prev: ["2026-11-25", "2026-12-01"] },
     { tipo: "marco", nome: "Encerramento do projeto", prev: "2026-12-01" },
   ]},
@@ -205,16 +207,17 @@ FASES.forEach((f) => {
   ROWS.push({ kind: "fase", nome: f.fase });
   f.itens.forEach((it) => {
     if (it.tipo === "marco") {
-      const p = D(it.prev), r = D(it.real || it.prev);
-      ROWS.push({ kind: "marco", fase: f.fase, nome: it.nome, p, r, desvio: Math.round((r - p) / DAY), obs: it.obs });
+      const p = D(it.prev), r = it.pendente ? Math.max(p, HOJE) : D(it.real || it.prev);
+      ROWS.push({ kind: "marco", fase: f.fase, nome: it.nome, p, r, desvio: Math.round((r - p) / DAY), obs: it.obs, pendente: !!it.pendente });
     } else {
       const p0 = D(it.prev[0]), p1 = D(it.prev[1]);
-      const rr = it.real || it.prev, r0 = D(rr[0]), r1 = D(rr[1]);
-      ROWS.push({ kind: "tarefa", fase: f.fase, nome: it.nome, p0, p1, r0, r1, desvio: Math.round((r1 - p1) / DAY), causa: !!it.causa, obs: it.obs });
+      const rr = it.real || it.prev, r0 = D(rr[0]), r1 = it.pendente ? Math.max(D(rr[1]), HOJE) : D(rr[1]);
+      ROWS.push({ kind: "tarefa", fase: f.fase, nome: it.nome, p0, p1, r0, r1, desvio: Math.round((r1 - p1) / DAY), causa: !!it.causa, obs: it.obs, pendente: !!it.pendente });
     }
   });
 });
 function status(r) {
+  if (r.pendente) return r.kind === "marco" ? "todo" : "now";
   if (r.kind === "marco") return r.r <= HOJE ? "done" : "todo";
   if (r.r1 < HOJE) return "done";
   if (r.r0 <= HOJE && HOJE <= r.r1) return "now";
@@ -286,7 +289,7 @@ function draw() {
         s += dm(x(r.p), C.bg, C.ink2, true);
       }
       const fill = st === "done" ? (r.desvio > 0 ? C.late : C.done) : C.bg;
-      const stroke = st === "done" ? fill : C.todo;
+      const stroke = st === "done" ? fill : r.pendente ? C.late : C.todo;
       s += dm(x(r.r), fill, stroke, false);
       s += `<rect x="${x(r.r) + 10}" y="${cy - 8}" width="${(fmt(r.r) + (r.desvio > 0 ? " +" + r.desvio + " d" : "")).length * 6.4 + 6}" height="16" fill="${C.bg}"/>`;
       s += `<text x="${x(r.r) + 12}" y="${cy + 4}" font-size="11" fill="${C.ink2}" stroke="${C.bg}" stroke-width="4" paint-order="stroke" stroke-linejoin="round">${fmt(r.r)}${r.desvio > 0 ? ` <tspan fill="${C.late}" font-weight="700">+${r.desvio} d</tspan>` : ""}</text>`;
@@ -297,7 +300,7 @@ function draw() {
       const lateFrom = r.desvio > 0 ? Math.max(r.r0, r.p1 + DAY) : null;
       const fill = st === "done" ? C.done : st === "now" ? C.now : "url(#hTodo)";
       const stroke = st === "todo" ? C.todo : "none";
-      if (r.causa && lateFrom) {
+      if ((r.causa || r.pendente) && lateFrom) {
         s += `<rect x="${xa}" y="${by}" width="${x(lateFrom) - xa}" height="${bh}" rx="3" fill="${fill}" stroke="${stroke}"/>`;
         s += `<rect x="${x(lateFrom)}" y="${by}" width="${xe - x(lateFrom)}" height="${bh}" rx="3" fill="url(#hLate)" stroke="${C.late}" stroke-width="1.5"/>`;
       } else {
@@ -324,7 +327,7 @@ function draw() {
   });
 }
 function showTip(e, r) {
-  const st = STATUS_TXT[status(r)];
+  const st = r.pendente ? "Atrasada, ainda não concluída" : STATUS_TXT[status(r)];
   let h = `<b>${r.nome}</b>`;
   if (r.kind === "marco") {
     h += `<div class="m">Previsto ${fmt(r.p)} · Realizado ${fmt(r.r)}</div>`;
@@ -372,7 +375,8 @@ function summary() {
     document.getElementById("noteText").innerHTML =
       `A entrega dos componentes estava prevista para <b>${fmt(causa.p1)}</b> e só aconteceu em <b>${fmt(causa.r1)}</b> (+${causa.desvio} dias). ` +
       `As atividades que dependiam das peças foram reprogramadas em sequência. O relatório final começou no prazo, em paralelo, e a folga até ${fmt(D("2026-11-20"))} absorveu o atraso: ` +
-      `<b>nenhum marco do encerramento mudou</b>.`;
+      `o relatório final foi entregue no prazo.` +
+      (ROWS.some((r) => r.pendente) ? ` Já a <b>aprovação do TEP</b>, prevista para 24/11, está atrasada e ainda não saiu.` : ``);
     document.getElementById("noteList").innerHTML = afet.map((r) =>
       `<li>${r.nome}: ${r.kind === "marco" ? fmt(r.p) + " → " + fmt(r.r) : fmt(r.p0) + "–" + fmt(r.p1) + " → " + fmt(r.r0) + "–" + fmt(r.r1)} <span class="dev">+${r.desvio} d</span></li>`).join("");
   } else {
@@ -382,12 +386,12 @@ function summary() {
   let t = `<tr><th>Atividade</th><th>Previsto</th><th>Realizado</th><th>Dur.</th><th>Desvio</th><th>Situação</th></tr>`;
   ROWS.forEach((r) => {
     if (r.kind === "fase") { t += `<tr class="ph"><td colspan="6">${r.nome}</td></tr>`; return; }
-    const st = status(r), col = st === "done" ? "var(--done)" : st === "now" ? "var(--now)" : "var(--todo)";
+    const st = status(r), col = r.pendente ? "var(--late)" : st === "done" ? "var(--done)" : st === "now" ? "var(--now)" : "var(--todo)";
     const dev = r.desvio > 0 ? `<span class="dev">+${r.desvio} d</span>` : `<span style="color:var(--ink2)">—</span>`;
     if (r.kind === "marco") {
-      t += `<tr><td><span style="color:var(--ink2)">◆</span> <i>${r.nome}</i></td><td class="mono">${fmt(r.p)}</td><td class="mono">${fmt(r.r)}</td><td class="mono">marco</td><td>${dev}</td><td><span class="pill"><i style="background:${col}"></i>${st === "done" ? "Atingido" : "Pendente"}</span></td></tr>`;
+      t += `<tr><td><span style="color:var(--ink2)">◆</span> <i>${r.nome}</i></td><td class="mono">${fmt(r.p)}</td><td class="mono">${fmt(r.r)}</td><td class="mono">marco</td><td>${dev}</td><td><span class="pill"><i style="background:${col}"></i>${r.pendente ? "Atrasado" : st === "done" ? "Atingido" : "Pendente"}</span></td></tr>`;
     } else {
-      t += `<tr><td>${r.nome}${r.obs ? `<div style="color:var(--ink2);font-size:12.5px;margin-top:2px">${r.obs}</div>` : ""}</td><td class="mono">${fmt(r.p0)}–${fmt(r.p1)}</td><td class="mono">${fmt(r.r0)}–${fmt(r.r1)}</td><td class="mono">${Math.round((r.r1 - r.r0) / DAY) + 1} d</td><td>${dev}</td><td><span class="pill"><i style="background:${col}"></i>${STATUS_TXT[st]}</span></td></tr>`;
+      t += `<tr><td>${r.nome}${r.obs ? `<div style="color:var(--ink2);font-size:12.5px;margin-top:2px">${r.obs}</div>` : ""}</td><td class="mono">${fmt(r.p0)}–${fmt(r.p1)}</td><td class="mono">${fmt(r.r0)}–${fmt(r.r1)}</td><td class="mono">${Math.round((r.r1 - r.r0) / DAY) + 1} d</td><td>${dev}</td><td><span class="pill"><i style="background:${col}"></i>${r.pendente ? "Atrasada" : STATUS_TXT[st]}</span></td></tr>`;
     }
   });
   document.getElementById("tbl").innerHTML = t;

@@ -1,4 +1,4 @@
-// Gera apresentacao/export/Placar_Eletronico_Status_20-11-2026.pptx
+// Gera apresentacao/export/Placar_Eletronico_Status_26-11-2026.pptx
 // Mesmo design do html/index.html (grade de 1280×720 px → 13,333×7,5 in).
 const path = require("path");
 const pptxgen = require("pptxgenjs");
@@ -6,7 +6,7 @@ const pptxgen = require("pptxgenjs");
 const ROOT = path.resolve(__dirname, "..");
 const IMG = (f) => path.join(ROOT, "assets/img", f);
 const WEB = (f) => path.join(ROOT, "assets/web", f);
-const OUT = path.join(ROOT, "export/Placar_Eletronico_Status_20-11-2026.pptx");
+const OUT = path.join(ROOT, "export/Placar_Eletronico_Status_26-11-2026.pptx");
 
 const P = (px) => +(px / 96).toFixed(4); // px → polegadas
 const C = {
@@ -32,7 +32,7 @@ const pres = new pptxgen();
 pres.layout = "LAYOUT_WIDE";
 pres.title = "Placar Eletrônico Digital — Status do Projeto";
 pres.author = "Equipe do Placar Eletrônico Digital";
-pres.subject = "Circuitos Digitais · UFMA · status em 20/11/2026";
+pres.subject = "Circuitos Digitais · UFMA · status em 26/11/2026";
 pres.theme = { headFontFace: HEAD, bodyFontFace: BODY };
 
 pres.defineSlideMaster({ title: "ESCURO", background: { color: C.pcb } });
@@ -156,13 +156,13 @@ function eq(slide, lines, x, y, w, h, fs = 16) {
 {
   const s = pres.addSlide({ masterName: "ESCURO" });
   traces(s, "cover");
-  kicker(s, "Circuitos Digitais · UFMA · Status em 20/11/2026");
+  kicker(s, "Circuitos Digitais · UFMA · Status em 26/11/2026");
   T(s, "Placar\nEletrônico\nDigital", 64, 200, 620, 240, { fontFace: HEAD, bold: true, fontSize: 52, lineSpacing: 54 });
   T(s, "Um contador de pontos para dois jogadores, feito só com lógica digital: sem microcontrolador, sem código.", 64, 456, 560, 70, { fontSize: 17, color: C.mint });
   scoreboard(s, 746, 150, 470, 330, 7, 3, 150);
   T(s, "André Luís Aguiar · Guilherme Passinho · Hugo Oliveira · Raí Abreu", 64, 640, 760, 24, { fontFace: MONO, fontSize: 11.5 });
   T(s, [{ text: "Orientador", options: { color: C.mint, breakLine: true } }, { text: "Prof. Luiz Henrique Neves Rodrigues", options: { color: C.ink } }], 816, 628, 400, 40, { fontFace: MONO, fontSize: 10, align: "right" });
-  s.addNotes("Abertura. O projeto é um placar de dois jogadores feito apenas com CIs de lógica digital (74HC93, CD4511 e 74HC32). Esta apresentação mostra o status em 20/11/2026: o que foi feito, simulação, montagem, custos e cronograma.");
+  s.addNotes("Abertura. O projeto é um placar de dois jogadores feito apenas com CIs de lógica digital (74HC93, CD4511 e 74HC32). Esta apresentação mostra o status em 26/11/2026: o que foi feito, simulação, montagem, custos e cronograma.");
 }
 
 // 02 ONDE ESTAMOS
@@ -172,8 +172,8 @@ function eq(slide, lines, x, y, w, h, fs = 16) {
   title(s, "A execução terminou: o placar funciona na simulação e na protoboard");
   const cw = 266, gap = 24, y0 = 250, ch = 220;
   const cards = [
-    { big: "90", unit: "", lab: "% do prazo", sub: "94 de 105 dias decorridos" },
-    { big: "14", unit: "/17", lab: "atividades", sub: "1 em andamento, 2 pendentes" },
+    { big: "95", unit: "", lab: "% do prazo", sub: "100 de 105 dias decorridos" },
+    { big: "15", unit: "/17", lab: "atividades", sub: "TEP com aprovação atrasada e apresentação" },
     { big: "8", unit: "/8", lab: "testes ok", sub: "T1–T7 na simulação e T8 na placa" },
   ];
   cards.forEach((c, i) => {
@@ -187,12 +187,12 @@ function eq(slide, lines, x, y, w, h, fs = 16) {
   const x = 64 + 3 * (cw + gap);
   card(s, x, y0, cw, ch, false);
   T(s, "R$", x + 24, y0 + 22, 80, 24, { fontFace: MONO, fontSize: 15, color: C.copper });
-  T(s, "82,25", x + 24, y0 + 44, cw - 48, 60, { fontFace: MONO, fontSize: 38, bold: true });
+  T(s, "123,00", x + 24, y0 + 44, cw - 48, 60, { fontFace: MONO, fontSize: 38, bold: true });
   T(s, "em materiais", x + 24, y0 + 112, cw - 48, 26, { fontFace: MONO, fontSize: 15, color: C.led });
-  T(s, "R$ 20,56 por integrante", x + 24, y0 + 146, cw - 48, 50, { fontSize: 14, color: C.mint });
-  T(s, [{ text: "Fase atual: ", options: { color: C.mint } }, { text: "Encerramento", options: { color: C.ink, bold: true } }, { text: ". Faltam o relatório final (20/11), o TEP (21–24/11) e a apresentação (25/11–01/12).", options: { color: C.mint } }], 64, 620, 1150, 30, { fontSize: 16 });
+  T(s, "R$ 30,75 por integrante", x + 24, y0 + 146, cw - 48, 50, { fontSize: 14, color: C.mint });
+  T(s, [{ text: "Fase atual: ", options: { color: C.mint } }, { text: "Encerramento", options: { color: C.ink, bold: true } }, { text: ". Relatório entregue; aprovação do TEP atrasada (prevista 24/11); apresentação até 01/12.", options: { color: C.mint } }], 64, 620, 1150, 30, { fontSize: 16 });
   num(s, 2);
-  s.addNotes("Resumo do status: 94 dos 105 dias decorridos (90%), 14 de 17 atividades concluídas, os 8 casos de teste aprovados e custo de R$ 82,25. A fase de execução foi encerrada; estamos no encerramento.");
+  s.addNotes("Resumo do status: 100 dos 105 dias decorridos (95%), 15 de 17 atividades concluídas, os 8 casos de teste aprovados e custo total de R$ 123,00. O relatório final foi entregue; o TEP foi elaborado, mas a aprovação, prevista para 24/11, está atrasada e ainda não saiu.");
 }
 
 // 03 O QUE É
@@ -313,14 +313,14 @@ function slide6Panel(s) {
 {
   const s = pres.addSlide({ masterName: "CLARO" });
   kicker(s, "Simulação · Tinkercad Circuits", true);
-  title(s, "O placar completo montado na protoboard virtual", true);
-  const h = 490, w = h * 1071 / 839;
+  title(s, "Nova simulação: dois jogadores, cada um contando de 0 a 9", true);
+  const h = 490, w = h * 540 / 521;
   card(s, 64, 196, w, h, true);
-  s.addImage({ path: IMG("tinkercad.png"), x: P(64), y: P(196), w: P(w), h: P(h), altText: "Placar de dois jogadores montado no Tinkercad" });
+  s.addImage({ path: IMG("simulacao_nova.png"), x: P(64), y: P(196), w: P(w), h: P(h), altText: "Nova simulação no Tinkercad: duas protoboards, uma por jogador, com 74HC93, CD4511, display e 74HC32" });
   const pts = [
     ["01", [{ text: "Uma protoboard por jogador, cada uma com " }, { text: "74HC93 → CD4511 → display", options: { bold: true } }, { text: "." }]],
-    ["02", [{ text: "O fio amarelo leva o " }, { text: "reset compartilhado", options: { bold: true } }, { text: " entre as duas placas." }]],
-    ["03", [{ text: "A montagem virtual virou o " }, { text: "mapa da física", options: { bold: true } }, { text: ": mesma posição de CIs e fios." }]],
+    ["02", [{ text: "Cada placar conta de " }, { text: "0 a 9", options: { bold: true } }, { text: " e volta a 0 sozinho no 10º toque." }]],
+    ["03", [{ text: "Um fio leva o " }, { text: "reset compartilhado", options: { bold: true } }, { text: " entre as placas: um botão zera os dois." }]],
   ];
   pts.forEach(([n, t], i) => {
     const y = 226 + i * 110;
@@ -328,7 +328,7 @@ function slide6Panel(s) {
     T(s, t, 816, y + 2, 400, 80, { fontSize: 16, color: C.pcb });
   });
   num(s, 8, true);
-  s.addNotes("No Tinkercad montamos o placar completo: uma protoboard por jogador, cada uma com contador, decodificador e display. O fio amarelo leva o reset compartilhado. Essa montagem serviu de mapa para a montagem física.");
+  s.addNotes("Esta é a nova simulação no Tinkercad, com os dois jogadores: uma protoboard por jogador, cada uma com contador, decodificador e display. Cada placar conta de 0 a 9 e volta a 0 no décimo toque. Um fio leva o reset compartilhado, então um único botão zera os dois placares.");
 }
 
 // 09 ESQUEMÁTICO + ANALISADOR
@@ -396,34 +396,34 @@ function slide6Panel(s) {
 {
   const s = pres.addSlide({ masterName: "CLARO" });
   kicker(s, "Custos", true);
-  title(s, "R$ 82,25 para o placar completo, e mais da metade é reaproveitável", true);
+  title(s, "R$ 123,00 no total: as peças chegaram, só falta o módulo de fonte", true);
   T(s, "TOTAL · SEM FRETE", 64, 206, 300, 18, { fontFace: MONO, fontSize: 10.5, bold: true, color: C.pcopper });
-  T(s, "R$ 82,25", 64, 228, 320, 64, { fontFace: MONO, fontSize: 38, bold: true, color: C.pcb });
-  T(s, "R$ 20,56 por integrante", 64, 296, 300, 24, { fontSize: 15, color: C.pmuted });
+  T(s, "R$ 123,00", 64, 228, 320, 64, { fontFace: MONO, fontSize: 38, bold: true, color: C.pcb });
+  T(s, "R$ 30,75 por integrante", 64, 296, 300, 24, { fontSize: 15, color: C.pmuted });
   img(s, WEB("dip.jpg"), 64, 340, 300, 228, 500, 381, { alt: "Circuitos integrados em encapsulamento DIP" });
   credit(s, "Foto: Kimmo Palosaari · domínio público", 64, 576, 300, C.pmuted);
-  const rows = [["Montagem e alimentação", "protoboards, jumpers, MB102", 48.0], ["Circuitos integrados", "2× 74HC93, 2× CD4511, 1× 74HC32", 22.5], ["Displays, botões e passivos", "2 displays, 3 botões, resistores, capacitores", 11.75]];
+  const rows = [["Circuitos integrados", "2× 74HC93, 2× CD4511, 74HC32", true], ["Displays, botões e passivos", "2 displays, 3 botões, resistores, capacitores", true], ["Protoboards e jumpers", "base da montagem dos dois placares", true], ["Módulo de fonte MB102", "alimentação de 5 V na protoboard", false]];
   const x0 = 420, bw = 796;
-  rows.forEach(([n, d, v], i) => {
-    const y = 206 + i * 100;
-    T(s, n, x0, y, 500, 26, { fontSize: 17, bold: true, color: C.pcb });
-    T(s, [{ text: "R$ " + v.toFixed(2).replace(".", ","), options: { bold: true, color: C.pcb } }, { text: "  " + Math.round((v / 82.25) * 100) + "%", options: { fontSize: 10.5, color: C.pmuted } }], x0 + bw - 260, y, 260, 26, { fontFace: MONO, fontSize: 16, align: "right" });
-    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: P(x0), y: P(y + 34), w: P(bw), h: P(22), rectRadius: 0.04, fill: { color: C.paper2 }, line: { type: "none" } });
-    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: P(x0), y: P(y + 34), w: P((bw * v) / 48), h: P(22), rectRadius: 0.04, fill: { color: C.pcb }, line: { type: "none" }, objectName: "barra-" + n });
-    T(s, d, x0, y + 62, bw, 20, { fontSize: 12.5, color: C.pmuted });
+  rows.forEach(([n, d, ok], i) => {
+    const y = 206 + i * 84;
+    T(s, n, x0, y + 8, 560, 26, { fontSize: 17, bold: true, color: C.pcb });
+    T(s, d, x0, y + 38, 560, 20, { fontSize: 12.5, color: C.pmuted });
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: P(x0 + bw - 112), y: P(y + 18), w: P(112), h: P(28), rectRadius: 0.14, fill: { color: ok ? C.pcb : "FBE3E0" }, line: { type: "none" } });
+    T(s, ok ? "✓ RECEBIDO" : "AGUARDANDO", x0 + bw - 112, y + 24, 112, 16, { fontFace: MONO, fontSize: 9.5, bold: true, color: ok ? C.ink : C.pled, align: "center" });
+    rect(s, x0, y + 74, bw, 1, C.paper2);
   });
-  T(s, "Preços à vista em lojas virtuais (consulta em 08/11/2026). Protoboards, jumpers e o módulo MB102 servem para outras disciplinas.", x0, 520, bw, 44, { fontSize: 13.5, color: C.pmuted });
+  T(s, "Enquanto o MB102 não chega, usamos a fonte de bancada do laboratório (5 V).", x0, 556, bw, 24, { fontSize: 13.5, color: C.pmuted });
   num(s, 12, true);
-  s.addNotes("Custo total de referência: R$ 82,25 sem frete, R$ 20,56 por integrante. Os CIs são cerca de 27% do custo; protoboards, jumpers e o módulo de alimentação MB102 somam 58% e podem ser reaproveitados.");
+  s.addNotes("O custo total ficou em R$ 123,00 sem frete, R$ 30,75 por integrante. Todas as peças já chegaram, menos o módulo de fonte MB102. Enquanto ele não chega, usamos a fonte de bancada do laboratório em 5 V.");
 }
 
 // 13 GANTT
 {
   const s = pres.addSlide({ masterName: "CLARO" });
-  kicker(s, "Cronograma · Gantt · 14 de 17 atividades concluídas", true);
+  kicker(s, "Cronograma · Gantt · 15 de 17 atividades concluídas", true);
   title(s, "Atraso de 4 dias, absorvido antes do fim", true);
   card(s, 64, 180, 1020, 1020 * 1428 / 2800, true);
-  s.addImage({ path: IMG("gantt.png"), x: P(64), y: P(180), w: P(1020), h: P(1020 * 1428 / 2800), altText: "Gráfico de Gantt previsto e realizado de 19/08 a 01/12/2026, com marcos, atraso de 4 dias na entrega dos componentes e linha de hoje em 20/11" });
+  s.addImage({ path: IMG("gantt.png"), x: P(64), y: P(180), w: P(1020), h: P(1020 * 1428 / 2800), altText: "Gráfico de Gantt previsto e realizado de 19/08 a 01/12/2026, com marcos, atraso de 4 dias na entrega dos componentes e linha de hoje em 26/11" });
   const LX = 1100;
   const leg = [["Concluída", C.done], ["Em andamento", C.now], ["Pendente", null, C.todoL], ["Atraso", null, C.pled], ["Previsto", "base"], ["Marco", "dia"]];
   leg.forEach(([t, fill, outline], i) => {
@@ -437,7 +437,7 @@ function slide6Panel(s) {
   T(s, [{ text: "+4 d", options: { fontSize: 16, bold: true, color: C.pled, breakLine: true } }, { text: "na entrega das peças", options: { fontSize: 9.5, color: C.pmuted } }], LX, 400, 160, 46, { fontFace: MONO });
   T(s, [{ text: "01/12", options: { fontSize: 16, bold: true, color: C.pcb, breakLine: true } }, { text: "fim mantido", options: { fontSize: 9.5, color: C.pmuted } }], LX, 462, 160, 46, { fontFace: MONO });
   num(s, 13, true);
-  s.addNotes("Gantt previsto × realizado, com marcos. A pedido do professor, todos os testes ficaram na fase Monitoramento e Testes. A entrega dos componentes atrasou 4 dias (prevista 03/11, chegou 07/11); a montagem física, o teste físico T8 e a validação final foram reprogramados, e a validação terminou em 13/11 em vez de 10/11. O relatório final começou no prazo, em paralelo, e a folga absorveu o atraso: nenhum marco do encerramento mudou.");
+  s.addNotes("Gantt previsto × realizado, com marcos. A pedido do professor, todos os testes ficaram na fase Monitoramento e Testes. A entrega dos componentes atrasou 4 dias (prevista 03/11, chegou 07/11); a montagem física, o teste físico T8 e a validação final foram reprogramados, e a validação terminou em 13/11 em vez de 10/11. O relatório final começou no prazo, em paralelo, e a folga absorveu o atraso: o relatório foi entregue no prazo. Já a aprovação do TEP, prevista para 24/11, está atrasada (+2 dias até hoje, 26/11) e ainda não saiu. A apresentação está em andamento.");
 }
 
 // 14 PROBLEMAS
@@ -469,28 +469,28 @@ function slide6Panel(s) {
   const s = pres.addSlide({ masterName: "ESCURO" });
   traces(s, "b");
   kicker(s, "Próximos passos");
-  title(s, "Três entregas até 01/12");
+  title(s, "Relatório entregue, TEP com aprovação atrasada");
   const y = 290;
   rect(s, 64, y, 1152, 3, C.trace);
-  rect(s, 64, y, 1152 * 0.3, 3, C.led);
+  rect(s, 64, y, 1152 * 0.76, 3, C.led);
   const steps = [
-    ["HOJE · 20/11", C.led, "Relatório final", "Resultados da placa e prestação de contas dos materiais", true],
-    ["21–24/11", C.copper, "TEP", "Termo de Encerramento do Projeto, elaborado e aprovado", false],
-    ["25/11–01/12", C.copper, "Apresentação", "O placar funcionando ao vivo na protoboard", false],
+    ["✓ 20/11", C.copper, "Relatório final", "Resultados da placa e prestação de contas dos materiais", "done"],
+    ["ATRASADO · previsto 24/11", C.led, "TEP", "Termo de Encerramento elaborado; aprovação ainda pendente", "late"],
+    ["HOJE · 26/11 · até 01/12", C.led, "Apresentação", "O placar funcionando ao vivo na protoboard", "now"],
   ];
   const cw = (1152 - 56) / 3;
   steps.forEach(([d, dc, h, b, now], i) => {
     const x = 64 + i * (cw + 28);
-    s.addShape(pres.shapes.OVAL, { x: P(x), y: P(y - 10), w: P(22), h: P(22), fill: { color: now ? C.led : C.pcb }, line: now ? { type: "none" } : { color: C.copper, width: 2.25 } });
+    s.addShape(pres.shapes.OVAL, { x: P(x), y: P(y - 10), w: P(22), h: P(22), fill: now === "late" ? { color: C.led, transparency: 100 } : { color: now === "now" ? C.led : C.copper }, line: now === "late" ? { color: C.led, width: 2.25 } : { type: "none" } });
     T(s, d, x, y + 34, cw, 22, { fontFace: MONO, fontSize: 11.5, bold: true, color: dc });
     T(s, h, x, y + 62, cw, 34, { fontFace: HEAD, bold: true, fontSize: 20 });
     T(s, b, x, y + 102, cw - 20, 56, { fontSize: 15, color: C.mint });
   });
   card(s, 64, 588, 1152, 70, false);
   T(s, "ANTES DA DEMO", 88, 614, 160, 18, { fontFace: MONO, fontSize: 10, bold: true, color: C.copper });
-  T(s, "Ensaiar o roteiro · conferir a alimentação · separar CIs e jumpers reserva", 260, 610, 930, 26, { fontSize: 16 });
+  T(s, "Ensaiar o roteiro · receber o MB102 (ou usar a fonte de bancada) · separar CIs reserva", 260, 610, 930, 26, { fontSize: 16 });
   num(s, 15);
-  s.addNotes("Próximas entregas: relatório final hoje (20/11), TEP de 21 a 24/11 e apresentação final de 25/11 a 01/12. Antes da demonstração: ensaiar o roteiro, conferir a alimentação e separar componentes reserva.");
+  s.addNotes("O relatório final foi entregue em 20/11. O TEP foi elaborado, mas a aprovação, prevista para 24/11, está atrasada e ainda não saiu. Falta a apresentação final, que vai até 01/12. Antes da demonstração: ensaiar o roteiro, receber o módulo de fonte MB102 (ou usar a fonte de bancada do laboratório) e separar componentes reserva.");
 }
 
 // 16 ENCERRAMENTO
